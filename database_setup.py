@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Date, Float, ForeignKey, Integer, String
+from sqlalchemy import Column, Date, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
@@ -37,7 +37,6 @@ def Books(Base):
 	nat=Column(String)
 	review=Column(Integer)
 
-
 def Authors(Base):
 	__tablename__='authors'
 	id=Column(Integer, primary_key=True)
@@ -57,7 +56,6 @@ def Reviews(Base):
 	review=Column(String(300))
 
 association_table = Table('association', Base.metadata,
-	Column('id', Integer)
     Column('user_id', Integer, ForeignKey('users.id')),
     Column('book_id', Integer, ForeignKey('books.id'))
 )
