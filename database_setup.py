@@ -34,6 +34,7 @@ class Books(Base):
 	id=Column(Integer, primary_key=True)
 	name=Column(String)
 	authorid=Column(Integer, ForeignKey("authors.id"))
+	author = relationship("Authors")
 	type1=Column(String)
 	type2=Column(String)
 	type3=Column(String)

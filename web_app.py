@@ -22,7 +22,9 @@ def main():
 
 @app.route('/nationalities')
 def Nationalities():
-	return
+	books = session.query(Books).filter_by(nat="Palestinian").all()
+	return render_template("nationality.html", books=books)
+
 
 
 @app.route('/genres')

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+{%for book in books%}
+	<img src="{{book.picture}}" width="104" height="142">
+	<h2>
+	Name: 
+	{{book.name}}
+	.<br>
+	Genre: 
+	{{book.type1}} 
+	{%if book.type2!="N/A"%}
+		, 
+		{{book.type2}}
+		{%if book.type3!="N/A"%}
+			, 
+			{{book.type3}}
+			{%if book.type4!="N/A"%}
+				, 
+				{{book.type4}}
+				{%if book.type5!="N/A"%}
+				, 
+				{{book.type5}}
+				.
+			{%else%}
+				.
+			{%endif%}
+			{%else%}
+				.
+			{%endif%}
+		{%else%}
+			.
+		{%endif%}
+	{%else%}
+		.
+	{%endif%}
+	<br>Author:
+	{{book.author.name}}
+	.
+	</h2>
+	<br>
+
+
+{%endfor%}
+
+</body>
