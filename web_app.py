@@ -21,6 +21,10 @@ def main():
 	return render_template('main_page.html')
 
 
+@app.route('/')
+def Signin():
+	return render_template('SignIn.html')
+ 
 
 
 
