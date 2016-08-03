@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from database_setup import Base, Users, Books, Authors, Reviews
 from datetime import datetime
 
-engine = create_engine('sqlite:///crudlab.db')
+engine = create_engine('sqlite:///project.db')
 Base.metadata.create_all(engine)
 Base.metadata.bind = engine
 
