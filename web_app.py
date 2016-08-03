@@ -40,6 +40,9 @@ def book(book_id):
 	author=session.query(Authors).filter_by(id=book.authorid).one()
 	return render_template("view_book.html", book=book, author=author)
 
+@app.route('/signup')
+def signup():
+	return
 
 
 
