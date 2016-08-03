@@ -20,9 +20,16 @@ session = DBSession()
 def main():
 	return render_template('main_page.html')
 
+@app.route('/nationalities')
+def Nationalities():
+	return
 
 
-@app.route('/')
+@app.route('/genres')
+def Genres():
+	return
+
+@app.route('/login')
 def Signin():
 	return render_template('SignIn.html')
  
