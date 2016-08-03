@@ -5,3 +5,20 @@ ul {
 html {
 	background-color: #D3D3D3;
 }
+#body_stuff {
+	background-color: #D3D3D3;
+}
+#login {
+	text-align: right;
+}
+
+div {
+	background: #D3D3D3;
+	vertical-align: 50%;
+}
+
+.emailForm {
+	border: 1px solid grey;
+	border-radius:10px;
+	margin-top:20px;
+}

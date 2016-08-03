@@ -21,36 +21,45 @@
 </head>
 
 <body>
-<div id="sidebar-wrapper">
-	<ul class="sidebar-nav">
-	<li class="sidebar-brand">
-	<a href="{{ url_for('main') }}">
-	Natioks
-	</a>
-	</li>
-	<li>
-		<a href="{{url_for('Signin')}}" class="active">Sign in</a>
-	</li>
-	<li>
-	<a href="{{url_for('Nationalities') }}">Nationalities </a>
-	</li>
-	<li>
-		<a href="{{ url_for('Genres') }}">Genres</a>
-	</li>
-	</ul>
+	<div id="body_stuff">
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+			<li class="sidebar-brand">
+			<a href="{{ url_for('main') }}">
+			Natioks
+			</a>
+			</li>
+			<li>
+				<a href="{{url_for('Signin')}}" class="active">Sign in</a>
+			</li>
+			<li>
+			<a href="{{url_for('Nationalities') }}">Nationalities </a>
+			</li>
+			<li>
+				<a href="{{ url_for('Genres') }}">Genres</a>
+			</li>
+			</ul>
+		</div>
+		<div class="container">
+			<!-- Text input-->
+			<form class="form-horizontal" style="vertical-align: 50%;">
+				<div class="form-group">
+  					<label class="col-md-4 control-label" for="email">E-mail:</label>  
+  						<div class="col-md-4">
+  							<input id="email" name="email" placeholder="E-mail" class="form-control input-md" type="email"> 
+  						</div>
+				</div>
 
-
-</div>
-<form>
-	<table>
-		<tr>
-			<td style="width:60%"></td>
-			<td style="width:14%"><input type="email" id="email" name="email" placeholder="Email"></td>
-			<td style="width:14%"><input type="password" id="Password" name="Password" placeholder="Password"></td>
-			<td style="width:13%"><input type="submit" name="SignIn"  value="Sign In"></td>
-		</tr>
-	</table>
-</form>
+				<div class="form-group">
+  					<label class="col-md-4 control-label" for="password">Password: </label>  
+  						<div class="col-md-4">
+  							<input id="password" name="password" placeholder="Password" class="form-control input-md" type="password"> 
+  						</div>
+				</div>
+				<center><input type="submit" name="login" value="Log in" class="btn btn-success">
+			</form>
+		</div>
+	</div>
 
 </body>
 

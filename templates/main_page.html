@@ -27,33 +27,26 @@
 </head>
 
 <body>
-<div id="sidebar-wrapper">
-	<ul class="sidebar-nav">
-	<li class="sidebar-brand">
-	<a href="{{ url_for('main') }}" class="active">
-	Natioks
-	</a>
-	</li>
-	<li>
-		<a href="{{url_for('Signin')}}">Sign in</a>
-	</li>
-	<li>
-	<a href="{{url_for('Nationalities') }}">Nationalities </a>
-	</li>
-	<li>
-		<a href="{{ url_for('Genres') }}">Genres</a>
-	</li>
-	</ul>
-
-
-</div>
-
-
-
-
-
-
-
+	<div id="body_stuff">
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+			<li class="sidebar-brand">
+			<a href="{{ url_for('main') }}" class="active">
+			Natioks
+			</a>
+			</li>
+			<li>
+				<a href="{{url_for('Signin')}}">Sign in</a>
+			</li>
+			<li>
+			<a href="{{url_for('Nationalities') }}">Nationalities </a>
+			</li>
+			<li>
+				<a href="{{ url_for('Genres') }}">Genres</a>
+			</li>
+			</ul>
+		</div>
+	</div>
 </body>
 
 
