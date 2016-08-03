@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html style="background-color: #D3D3D3">
 <head>
   <title>
-    Title for this Page Goes Here
+    Natioks Website
   </title>
   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
   
@@ -10,7 +10,32 @@
 </head>
 
 <body>
-<h1>Our MEET Y2 project!</h1>
+<img src="{{ url_for('static' , filename='logo_website.png') }}" width="150" height="150" alt="logo_website">
+<div style=" 
+	border-top-style: none;
+    border-right-style: solid;
+    border-bottom-style: none;
+    border-left-style: none;
+    width: 20%;
+    align='left'; ">
+<h1> Natioks!</h1>
+
+<br><h2><a href="{{ url_for('main') }}">HomePage</a></h2>
+<h2>Nationality:<h2>
+<ul>
+	<li><a href="Broken-Code-Fix-Me">Palestinian</a></li>
+	<li><a href="Broken-Code-Fix-Me">Israeli</a></li>
+</ul>
+<h2>Genre:</h2>
+<ul>
+	<li><a href="Broken-Code-Fix-Me">Drama</a></li>
+	<li><a href="Broken-Code-Fix-Me">Adventure</a></li>
+	<li><a href="Broken-Code-Fix-Me">Romans</a></li>
+</ul>
+</div>
+</form>
+
+
 
 </body>
 
