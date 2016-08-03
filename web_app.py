@@ -5,7 +5,7 @@ app = Flask(__name__)
 ### Add your tables here!
 # For example:
 # from database_setup import Base, Potato, Monkey
-from database_setup import Base
+from database_setup import Base, Books, Users, Authors, Reviews
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -20,7 +20,11 @@ session = DBSession()
 def main():
 	return render_template('main_page.html')
 
-
+@app.route('/book/<int:book_id>')
+def book(book_id):
+	book=session.query(Books).filter_by(id=book_id).one()
+	author=session.query(Authors).filter_by(id=book.authorid).one()
+	return render_template("view_book.html", book=book, author=author)
 
 
 
