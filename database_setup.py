@@ -42,7 +42,7 @@ class Books(Base):
 	lang=Column(String)
 	nat=Column(String)
 	review=Column(Integer, ForeignKey('reviews.rating'))
-	#picture=Column(String)
+	picture=Column(String)
 
 class Authors(Base):
 	__tablename__='authors'
@@ -51,7 +51,7 @@ class Authors(Base):
 	dob=Column(Date)
 	nat=Column(String)
 	lang=Column(String)
-	#picture=Column(String)
+	picture=Column(String)
 
 
 
