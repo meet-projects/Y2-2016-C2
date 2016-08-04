@@ -5,7 +5,7 @@ app = Flask(__name__)
 ### Add your tables here!
 # For example:
 # from database_setup import Base, Potato, Monkey
-from database_setup import Base, Books, Users, Authors, Reviews, association_table,Genre
+from database_setup import Base, Books, Users, Authors, Reviews, association_table,Genre,UserToGenre
 
 from datetime import datetime
 
@@ -38,11 +38,6 @@ def Nationalities():
 	booksi = session.query(Books).filter_by(nat="Israeli").all()
 	return render_template("nationality.html", booksp=booksp, booksi=booksi)
 
-
-
-@app.route('/genres')
-def Genres():
-	return
 
 @app.route('/login', methods=['GET', 'POST'])
 def Signin():
@@ -102,8 +97,10 @@ def history(user):
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
 	if request.method == 'GET':
-		return render_template("SignUp.html")
+		genres=session.query(Genre).all()
+		return render_template("SignUp.html", genres=genres)
 	else:
+		print(request.form)
 		new_name = request.form['name']
 		new_email = request.form['email']
 		new_password = request.form['password']
@@ -111,20 +108,23 @@ def signUp():
 		new_month = request.form['month']
 		new_year = request.form['year']
 		new_nat = request.form['nat']
-		
 		new_dob =  datetime(year=int(new_year), month=int(new_month), day=int(new_day))
 	#	new_dob = datetime.strptime(new_day+' '+new_month+' '+new_year,'%b %d %Y')
 
-
 		user = Users(name = new_name, email = new_email, password = new_password, dob = new_dob , nat = new_nat)
 		session.add(user)
+		session.commit()
+		for g_id in request.form['genres']:
+			user_to_genre=UserToGenre(user_id=user.id,genre_id=g_id)
+			session.add(user_to_genre)
+	
 		session.commit()
 		
 
 		return redirect(url_for('main'))
 
-@app.route('/genre')
-def genre():
+@app.route('/genres')
+def genres():
 	genres = session.query(Genre).all()
 	return render_template('genre.html', genres=genres)
 
