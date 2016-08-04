@@ -24,14 +24,26 @@
 	<div id="body_stuff">
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
+			{% if user == None %}
 			<li class="sidebar-brand">
+			<a href="{{ url_for('main') }}" class="active">
+			Natioks
+			</a>
+			</li>
+			<li>
+				<a href="{{url_for('Signin')}}">Sign in</a>
+			</li>
+			<li>
+			<a href="{{url_for('Nationalities') }}">Nationalities </a>
+			</li>
+			<li>
+				<a href="{{ url_for('Genres') }}">Genres</a>
+			{%else%}
+				<li class="sidebar-brand">
 			<a href="{{ url_for('home', user=user.id) }}" class="active">
 			Natioks
 			</a>
-			<li class="sidebar-brand">Welcome back!</li>
-			</li>
-			<li>
-				<a href="{{url_for('Signout')}}">Sign out</a>
+			<li class="sidebar-brand"><a href="#">Welcome back!</a></li>
 			</li>
 			<li>
 			<a href="{{url_for('Nationalities') }}">Nationalities </a>
@@ -39,7 +51,16 @@
 			<li>
 				<a href="{{ url_for('Genres') }}">Genres</a>
 			</li>
-			<li><a href="{{ url_for('history', user=user.id) }} ">History</a></li>
+			<li><a href="{{ url_for('history') }} ">History</a></li>
+			<li>
+				<a href="{{ url_for('settings') }}">
+					Settings
+				</a>
+			</li>
+						<li>
+				<a href="{{url_for('Signout')}}">Sign out</a>
+			</li>
+			{% endif %}
 			</ul>
 		</div>
 

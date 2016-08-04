@@ -56,11 +56,20 @@
 
 
 		<div class="main">
+		<table class="table table-bordered">
 			<h3>We think you might like these...</h3>
-			{% for book in books %}
 			<tr>
-				
-			</tr>
+			{% for book in books %}
+			<td>
+			<center>
+				<img src="{{ url_for('static', filename=book.picture) }}"><br>
+				{{ book.name }}<br>
+				{{ book.author.name }}<br>
+				{{ book.Genres}}
+				</center>
+				</td>
+			{%endfor%}
+			</table>
 		</div>
 	</div>
 </body>
