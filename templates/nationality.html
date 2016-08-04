@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html style="background-color: #D3D3D3">
 <head>
 <head>
   <title>
-
+  Natioks Homepage
   </title>
       <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,10 +20,59 @@
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
   
 </head>
-
+  
+  
 </head>
+
 <body>
-<h1>Palestinian:<br>
+	<div id="body_stuff">
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+			{% if user != None %}
+			<li class="sidebar-brand">
+			<a href="{{ url_for('home', user=user.id) }}" class="active">
+			Natioks
+			</a>
+			<li class="sidebar-brand"><a href="#">Welcome back!</a></li>
+			</li>
+			<li>
+			<a href="{{url_for('Nationalities') }}">Nationalities </a>
+			</li>
+			<li>
+				<a href="{{ url_for('Genres') }}">Genres</a>
+			</li>
+			<li><a href="{{ url_for('history') }} ">History</a></li>
+			<li>
+				<a href="{{ url_for('settings') }}">
+					Settings
+				</a>
+			</li>
+						<li>
+				<a href="{{url_for('Signout')}}">Sign out</a>
+			</li>
+			{%else%}
+			<li class="sidebar-brand">
+			<a href="{{ url_for('main') }}" class="active">
+			Natioks
+			</a>
+			</li>
+			<li>
+				<a href="{{url_for('Signin')}}">Sign in</a>
+			</li>
+			<li>
+			<a href="{{url_for('Nationalities') }}">Nationalities </a>
+			</li>
+			<li>
+				<a href="{{ url_for('Genres') }}">Genres</a>
+				{%endif%}
+			</ul>
+		</div>
+
+
+
+
+		<div class="main">
+			<h1>Palestinian:<br>
 Top 5:</h1>
 {%for bookp in booksp%}
 	{%if bookp.id<6%}
@@ -115,5 +164,7 @@ Top 5:</h1>
 		<br>
 	{%endif%}
 {%endfor%}
+		</div>
+	</div>
 
-</body>
+

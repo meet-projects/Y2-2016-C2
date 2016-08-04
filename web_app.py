@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request , redirect, url_for
+from flask import Flask, render_template, request , redirect, url_for, session
 app = Flask(__name__)
-
+app.secret_key="this is my project"
 # SQLAlchemy stuff
 ### Add your tables here!
 # For example:
@@ -9,13 +9,13 @@ from database_setup import Base, Books, Users, Authors, Reviews, association_tab
 
 from datetime import datetime
 
-from sqlalchemy import create_engine, desc
+from sqlalchemy import create_engine, desc, asc
 
 from sqlalchemy.orm import sessionmaker
 engine = create_engine('sqlite:///project.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
-session = DBSession()
+dbsession = DBSession()
 
 
 
@@ -27,16 +27,24 @@ def main():
 
 
 
-@app.route('/home/<int:user>')
-def home(user):
-	user=session.query(Users).filter_by(id=user).first()
-	return render_template('home.html', user=user)
+@app.route('/home')
+def home():
+	user=Query(session['user'])
+	readbooks=dbsession.query(association_table).filter_by(user_id=user.id).all()
+
+	books=dbsession.query(Books).all()
+	for book in books:
+		if (book.nat!=user.nat):
+			sortedlist.append(book)
+	sortedlist=sorted(books)
+	return render_template('home.html', user=user, books=sortedlist)
 
 @app.route('/nationalities')
 def Nationalities():
-	booksp = session.query(Books).filter_by(nat="Palestinian").all()
-	booksi = session.query(Books).filter_by(nat="Israeli").all()
-	return render_template("nationality.html", booksp=booksp, booksi=booksi)
+	user=Query(session['user'])
+	booksp = dbsession.query(Books).filter_by(nat="Palestinian").all()
+	booksi = dbsession.query(Books).filter_by(nat="Israeli").all()
+	return render_template("nationality.html", booksp=booksp, booksi=booksi, user=user)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -44,56 +52,59 @@ def Signin():
 	if (request.method=='POST'):
 		password=request.form['password']
 		email=request.form['email']
-		results=session.query(Users).filter_by(password=password, email=email).all()
-		if (len(results)>0):
-			return redirect(url_for('home', user=results[0].id))
+		results=dbsession.query(Users).filter_by(password=password, email=email).first()
+		if (results != None):
+			session['user'] = results.id
+			return redirect(url_for('home'))
 		else:
 			return render_template('SignIn.html')
 	return render_template("SignIn.html")
  
 @app.route('/signout')
 def Signout():
+	session['user']=None
 	return redirect(url_for('main'))
 
 @app.route('/book/<int:book_id>')
 def book(book_id):
-	book=session.query(Books).filter_by(id=book_id).one()
-	author=session.query(Authors).filter_by(id=book.authorid).one()
+	book=dbsession.query(Books).filter_by(id=book_id).one()
+	author=dbsession.query(Authors).filter_by(id=book.authorid).one()
 	return render_template("view_book.html", book=book, author=author)
 
 
 
 @app.route('/author')
 def author(user, author):
-	books = session.query(Books).all()
-	authors = session.query(Authors).all()
+	books = dbsession.query(Books).all()
+	authors = dbsession.query(Authors).all()
 	return render_template('author.html', authors=authors, books=books)
 
 
-@app.route('/settings/<int:user>', methods=['GET', 'POST'])
-def settings(user):
-	User=session.query(Users).filter_by(id=user).first()
-	if (request.method=='POST' and request.form['confpass']==User.password):
-		if (request.form['password']==request.form['confpassword']):
-			User.password=request.form['password']
-		User.name=request.form['name']
-		User.email=request.form['email']
-		User.nat=request.form['nat']
-		session.commit()
-		return redirect(url_for('main'))
-	return render_template('settings.html', user=User.id)
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+	user=Query(session['user'])
+	if (request.method=='POST'):
+		if (request.form['confpass']==user.password):
+			if (request.form['password']==request.form['confpassword']):
+				user.password=request.form['password']
+			user.name=request.form['name']
+			user.email=request.form['email']
+			user.nat=request.form['nat']
+			dbsession.commit()
+			return redirect(url_for('main'))
+	return render_template('settings.html', user=user)
 
 
 
-@app.route('/history/<int:user>')
-def history(user):
-	user=session.query(Users).filter_by(id=user).one()
-	books=session.query(association_table).filter_by(user_id=user.id).all()
+@app.route('/history')
+def history():
+	user=Query(session['user'])
+	books=dbsession.query(association_table).filter_by(user_id=user.id).all()
 	booksp=[]
 	booksi=[]
 	i=len(books)-1
 	while (len(booksp)<5 and len(booksi)<5 and i>len(books)):
-		isread=session.query(association_table).filter_by(user_id=user.id, book_id=books[i].id).scalar()
+		isread=dbsession.query(association_table).filter_by(user_id=user.id, book_id=books[i].id).scalar()
 		if (not isread):
 			if (books[i].nat=="Palestinian"):
 				booksp.append(books[i])
@@ -105,7 +116,7 @@ def history(user):
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
 	if request.method == 'GET':
-		genres=session.query(Genre).all()
+		genres=dbsession.query(Genre).all()
 		return render_template("SignUp.html", genres=genres)
 	else:
 		print(request.form)
@@ -120,25 +131,26 @@ def signUp():
 	#   new_dob = datetime.strptime(new_day+' '+new_month+' '+new_year,'%b %d %Y')
 
 		user = Users(name = new_name, email = new_email, password = new_password, dob = new_dob , nat = new_nat)
-		session.add(user)
-		session.commit()
+		dbsession.add(user)
+		dbsession.commit()
 		for g_id in request.form['genres']:
 			user_to_genre=UserToGenre(user_id=user.id,genre_id=g_id)
-			session.add(user_to_genre)
+			dbsession.add(user_to_genre)
 	
-		session.commit()
+		dbsession.commit()
 		
 
-		return redirect(url_for('main'))
+		return redirect(url_for('Signin'))
 
 @app.route('/genres/')
-def Genres(user):
-	genres = session.query(Genre).all()
-	if (user!=0):
-		user=session.query(Users).filter_by(id=user).first()
-		return render_template('genre.html',user=user.id, genres=genres)
-	return render_template('genre.html', user=0, genres=genres)
+def Genres():
+	genres = dbsession.query(Genre).all()
+	user=Query(session['user'])
+	return render_template('genre.html', user=user, genres=genres)
 
+
+def Query(id):
+	return dbsession.query(Users).filter_by(id=id).first()
 
 if __name__ == '__main__':
 	app.run(debug=True)

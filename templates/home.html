@@ -35,19 +35,19 @@
 			<li class="sidebar-brand"><a href="#">Welcome back!</a></li>
 			</li>
 			<li>
-				<a href="{{url_for('Signout')}}">Sign out</a>
-			</li>
-			<li>
 			<a href="{{url_for('Nationalities') }}">Nationalities </a>
 			</li>
 			<li>
 				<a href="{{ url_for('Genres') }}">Genres</a>
 			</li>
-			<li><a href="{{ url_for('history', user=user.id) }} ">History</a></li>
+			<li><a href="{{ url_for('history') }} ">History</a></li>
 			<li>
-				<a href="{{ url_for('settings', user=user.id) }}">
+				<a href="{{ url_for('settings') }}">
 					Settings
 				</a>
+			</li>
+						<li>
+				<a href="{{url_for('Signout')}}">Sign out</a>
 			</li>
 			</ul>
 		</div>
@@ -56,7 +56,11 @@
 
 
 		<div class="main">
-			test
+			<h3>We think you might like these...</h3>
+			{% for book in books %}
+			<tr>
+				
+			</tr>
 		</div>
 	</div>
 </body>
