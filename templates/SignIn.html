@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<head>
   <title>
 
   </title>
@@ -9,7 +10,7 @@
     <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
     <meta name="description" content="">
 <meta name="author" content="">
-<link href="static/sidebar.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='sidebar.css') }}" rel="stylesheet">
   	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
   	<!-- Latest compiled and minified CSS --> 
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -18,6 +19,7 @@
 	<!-- Latest compiled JavaScript --> 
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
   
+</head>
 </head>
 
 <body>
@@ -59,7 +61,7 @@
 		  						</div>
 						</div>
 						<div class="form-group">
-							<center><label class="control-label"><a href="{{ url_for('signup') }}">Dont have an account? Sign up now.</a></label></center>
+							<center><label class="control-label"><a href="{{ url_for('signUp') }}">Dont have an account? Sign up now.</a></label></center>
 						</div>
 						<center><input type="submit" name="submit" class="btn btn-success" value="Log in"></center>
 					</form>
