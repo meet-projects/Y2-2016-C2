@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Genre
+	</title>
+</head>
+<body>
+
+{% for g in genres %}
+{{g.name}}
+	<h3>Books: {{ g.books|join(', ', attribute='name') }}.</h3>
+
+{%endfor%}
+
+</body>
+</html>

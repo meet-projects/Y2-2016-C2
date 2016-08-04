@@ -29,6 +29,13 @@ class Users(Base):
 	read=relationship("Books", secondary=association_table)
 
 
+
+class Genre(Base):
+	__tablename__='genre'
+	id=Column(Integer, primary_key=True)
+	name = Column(String)
+	books = relationship('Books', secondary='book_to_genre', uselist=True)
+
 class Books(Base):
 	__tablename__='books'
 	id=Column(Integer, primary_key=True)
@@ -44,6 +51,13 @@ class Books(Base):
 	nat=Column(String)
 	review=Column(Integer, ForeignKey('reviews.rating'))
 	picture=Column(String)
+	genres = relationship('Genre', secondary='book_to_genre', uselist=True)
+
+class BookToGenre(Base):
+	__tablename__='book_to_genre'
+	id=Column(Integer, primary_key=True)
+	book_id = Column(Integer, ForeignKey('books.id'))
+	genre_id = Column(Integer, ForeignKey('genre.id'))
 
 class Authors(Base):
 	__tablename__='authors'

@@ -5,7 +5,7 @@ app = Flask(__name__)
 ### Add your tables here!
 # For example:
 # from database_setup import Base, Potato, Monkey
-from database_setup import Base, Books, Users, Authors, Reviews
+from database_setup import Base, Books, Users, Authors, Reviews, Genre
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -75,6 +75,11 @@ def author():
 def history(user):
 	user=session.query(Users).filter_by(id=user).one()
 	return render_template('History.html', user=user)
+
+@app.route('/genre')
+def genre():
+	genres = session.query(Genre).all()
+	return render_template('genre.html', genres=genres)
 
 
 if __name__ == '__main__':
