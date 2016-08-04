@@ -53,6 +53,7 @@ class Authors(Base):
 	nat=Column(String)
 	lang=Column(String)
 	picture=Column(String)
+	books = relationship("Books", uselist=True)
 
 
 
