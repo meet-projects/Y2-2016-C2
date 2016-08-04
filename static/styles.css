@@ -24,7 +24,7 @@ div {
 
 .main {
 	position: absolute;
-	left: 300px;
+	left: 275px;
 	height: 100%;
 	width: 80%;
 }
@@ -35,4 +35,8 @@ div {
 	top: 50%;
 	left:50%;
 	transform: translate(-50%,-50%);
+}
+
+hr {
+	border-color: #25171A;
 }

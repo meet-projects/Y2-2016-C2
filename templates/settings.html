@@ -35,15 +35,20 @@
 			<li class="sidebar-brand"><a href="#">Welcome back!</a></li>
 			</li>
 			<li>
-				<a href="{{url_for('Signout')}}">Sign out</a>
-			</li>
-			<li>
 			<a href="{{url_for('Nationalities') }}">Nationalities </a>
 			</li>
 			<li>
 				<a href="{{ url_for('Genres') }}">Genres</a>
 			</li>
-			<li><a href="{{ url_for('history', user=user.id) }} ">History</a></li>
+			<li><a href="{{ url_for('history') }} ">History</a></li>
+			<li>
+				<a href="{{ url_for('settings') }}">
+					Settings
+				</a>
+			</li>
+						<li>
+				<a href="{{url_for('Signout')}}">Sign out</a>
+			</li>
 			</ul>
 		</div>
 
@@ -76,13 +81,13 @@
 							<div class="form-group">
 	  							<label class="col-md-4 control-label" for="password">New Password: </label>  
 	  							<div class="col-md-4">
-	  								<input id="password" name="password" placeholder="Password" class="form-control" type="password" required> 
+	  								<input id="password" name="password" placeholder="Password" class="form-control" type="password"> 
 	  							</div>
 							</div>
 							<div class="form-group">
 	  							<label class="col-md-4 control-label" for="password">Confirm Password: </label>  
 	  							<div class="col-md-4">
-	  								<input id="password" name="confpassword" placeholder="Password" class="form-control" type="password" required> 
+	  								<input id="password" name="confpassword" placeholder="Password" class="form-control" type="password"> 
 	  							</div>
 							</div>
 							<div class="form-group">
@@ -98,6 +103,13 @@
 	  							<div class="col-md-4">
 	  								<input id="nat" name="nat" placeholder="Nationality" class="form-control" type="text" value={{user.nat}} required> 
 	  							</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="confpass">Current Password: </label>
+								<div class="col-md-4">
+								<input type="password" name="confpass" class="form-control" placeholder="Current Password" required>
+								</div>
 							</div>
 							<center><input type="submit" name="change" class="btn btn-success" value="Change Settings"></center>
 						</form>
