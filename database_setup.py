@@ -35,6 +35,8 @@ class Genre(Base):
 	id=Column(Integer, primary_key=True)
 	name = Column(String)
 	books = relationship('Books', secondary='book_to_genre', uselist=True)
+	
+
 
 class Books(Base):
 	__tablename__='books'

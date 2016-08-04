@@ -39,11 +39,6 @@ def Nationalities():
 	return render_template("nationality.html", booksp=booksp, booksi=booksi)
 
 
-
-@app.route('/genres')
-def Genres():
-	return
-
 @app.route('/login', methods=['GET', 'POST'])
 def Signin():
 	if (request.method=='POST'):
@@ -117,8 +112,8 @@ def signUp():
 
 		return redirect(url_for('main'))
 
-@app.route('/genre')
-def genre():
+@app.route('/genres')
+def genres():
 	genres = session.query(Genre).all()
 	return render_template('genre.html', genres=genres)
 

@@ -2,15 +2,24 @@
 <html>
 <head>
 	<title>
-		Genre
+		Genres
 	</title>
 </head>
 <body>
-
+<h1>Genres:</h1>
 {% for g in genres %}
-{{g.name}}
-	<h3>Books: {{ g.books|join(', ', attribute='name') }}.</h3>
-
+	<h2>{{g.name}} Books: <br> Top 5:<br></h2>
+	{%for bookg in g.books%}
+		{%if bookg.id<6%}
+			<h3>{{bookg.id}}.
+			<img src="{{bookg.picture}}" width="104" height="142"><br>
+			Name: {{bookg.name}}.<br>
+			Nationality: {{bookg.nat}}.<br>
+			Author: {{bookg.author.name}}.<br>
+			Language: {{bookg.lang}}.<br>
+		{%endif%}
+		</h3>
+	{%endfor%}
 {%endfor%}
 
 </body>
