@@ -69,7 +69,10 @@ def signup():
 def author():
 	return render_template('author.html')
 
-
+@app.route('/history/<int:user>')
+def history(user):
+	user=session.query(Users).filter_by(id=user).one()
+	return render_template('History.html', user=user)
 
 
 if __name__ == '__main__':
