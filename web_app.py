@@ -46,6 +46,10 @@ def book(book_id):
 def signup():
 	return
 
+@app.route('/author')
+def author():
+	return render_template('author.html')
+
 
 
 
