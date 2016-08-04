@@ -34,7 +34,7 @@
 			<a href="{{ url_for('home', user=user.id) }}" class="active">
 			Natioks
 			</a>
-			<li class="sidebar-brand">Welcome back, {{ user.name }}!</li>
+			<li class="sidebar-brand"><a href="#">Welcome back, {{ user.name }}!</a></li>
 			</li>
 			<li>
 				<a href="{{url_for('Signout')}}">Sign out</a>
@@ -47,6 +47,13 @@
 			</li>
 			<li><a href="{{ url_for('history', user=user.id) }} ">History</a></li>
 			</ul>
+		</div>
+
+
+
+
+		<div class="main">
+			test
 		</div>
 	</div>
 </body>
