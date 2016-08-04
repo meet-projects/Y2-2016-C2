@@ -18,7 +18,15 @@ session = DBSession()
 #YOUR WEB APP CODE GOES HERE
 @app.route('/')
 def main():
-	return render_template('main_page.html')
+	return render_template('index.html')
+
+
+
+
+@app.route('/home/<int:user>')
+def home(user):
+	user=session.query(Users).filter_by(id=user).one()
+	return render_template('home.html', user=user)
 
 @app.route('/nationalities')
 def Nationalities():
@@ -39,10 +47,13 @@ def Signin():
 		email=request.form['email']
 		results=session.query(Users).filter_by(password=password, email=email).all()
 		if (len(results)>0):
-			return redirect(url_for('main'))
+			return redirect(url_for('home', user=results[0].id))
 	else:
 		return render_template('SignIn.html')
  
+@app.route('/signout')
+def Signout():
+	return redirect(url_for('main'))
 
 @app.route('/book/<int:book_id>')
 def book(book_id):
@@ -60,7 +71,10 @@ def author():
 	authors = session.query(Authors).all()
 	return render_template('author.html', authors=authors, books=books)
 
-
+@app.route('/history/<int:user>')
+def history(user):
+	user=session.query(Users).filter_by(id=user).one()
+	return render_template('History.html', user=user)
 
 
 if __name__ == '__main__':
