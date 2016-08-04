@@ -69,10 +69,26 @@ def book(book_id):
 
 
 @app.route('/author')
-def author():
+def author(user, author):
 	books = session.query(Books).all()
 	authors = session.query(Authors).all()
 	return render_template('author.html', authors=authors, books=books)
+
+
+@app.route('/settings/<int:user>', methods=['GET', 'POST'])
+def settings(user):
+	User=session.query(Users).filter_by(id=user).first()
+	if (request.method=='POST' and request.form['confpass']==User.password):
+		if (request.form['password']==request.form['confpassword']):
+			User.password=request.form['password']
+		User.name=request.form['name']
+		User.email=request.form['email']
+		User.nat=request.form['nat']
+		session.commit()
+		return redirect(url_for('main'))
+	return render_template('settings.html', user=User.id)
+
+
 
 @app.route('/history/<int:user>')
 def history(user):
@@ -80,17 +96,7 @@ def history(user):
 	books=session.query(association_table).filter_by(user_id=user.id).all()
 	booksp=[]
 	booksi=[]
-	i=len(books)-1
-	pcur=0
-	icur=0
-	while (len(booksp)<5 and len(booksi)<5):
-		if (books[i].nat=="Palestinian"):
-			booksp.append(books[i])
-			pcur+=1
-		else:
-			booksi.append(books[i])
-			icur+=1
-		i-=1
+	print(len(books))
 	return render_template('history.html', user=user, booksp=booksp, booksi=booksi)
 
 @app.route('/signUp', methods=['GET', 'POST'])

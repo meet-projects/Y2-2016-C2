@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html style="background-color: #D3D3D3">
+<head>
 <head>
   <title>
-
+  Profile Settings
   </title>
       <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,18 +20,22 @@
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
   
 </head>
+  
+  
+</head>
 
 <body>
 	<div id="body_stuff">
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
 			<li class="sidebar-brand">
-			<a href="{{ url_for('main') }}">
+			<a href="{{ url_for('home', user=user.id) }}" class="active">
 			Natioks
 			</a>
+			<li class="sidebar-brand"><a href="#">Welcome back!</a></li>
 			</li>
 			<li>
-				<a href="{{url_for('Signin')}}">Sign in</a>
+				<a href="{{url_for('Signout')}}">Sign out</a>
 			</li>
 			<li>
 			<a href="{{url_for('Nationalities') }}">Nationalities </a>
@@ -38,56 +43,71 @@
 			<li>
 				<a href="{{ url_for('Genres') }}">Genres</a>
 			</li>
+			<li><a href="{{ url_for('history', user=user.id) }} ">History</a></li>
 			</ul>
 		</div>
-			<div class="main">
+
+
+
+
+		<div class="main">
 			<!-- Text input-->
+			<center>
 				<div class="row">
 					<div class="col-md-8">
-						<center><h1>Sign Up</h1></center>
-						<form class="form-horizontal" style="vertical-align: 50%;"  action="{{url_for('signUp')}}" method="POST">
+						<center><h1>Change Settings</h1></center>
+
+						<hr>
+						<form class="form-horizontal" style="vertical-align: 50%;"  action="{{url_for('settings')}}" method="POST">
 							
 							<div class="form-group">
 	  							<label class="col-md-4 control-label" for="name">Name:</label>  
 	  							<div class="col-md-4">
-	  								<input id="name" name="name" placeholder="Name" class="form-control" type="text" required> 
+	  								<input id="name" name="name" placeholder="Name" class="form-control" type="text" value={{user.name}} required> 
 	  							</div>
 							</div>
 							<div class="form-group">
 	  							<label class="col-md-4 control-label" for="email">E-mail:</label>  
 	  							<div class="col-md-4">
-	  								<input id="email" name="email" placeholder="Email" class="form-control" type="email" required> 
+	  								<input id="email" name="email" placeholder="Email" class="form-control" type="email" value={{user.email}} required> 
 	  							</div>
 							</div>
 
 							<div class="form-group">
-	  							<label class="col-md-4 control-label" for="password">Password: </label>  
+	  							<label class="col-md-4 control-label" for="password">New Password: </label>  
 	  							<div class="col-md-4">
 	  								<input id="password" name="password" placeholder="Password" class="form-control" type="password" required> 
 	  							</div>
 							</div>
 							<div class="form-group">
+	  							<label class="col-md-4 control-label" for="password">Confirm Password: </label>  
+	  							<div class="col-md-4">
+	  								<input id="password" name="confpassword" placeholder="Password" class="form-control" type="password" required> 
+	  							</div>
+							</div>
+							<div class="form-group">
 	  							<label class="col-md-4 control-label" for="dob">Date of Birth: </label>  
 	  							<div class="col-md-4">
-	  								<input id="day" name="day" placeholder="day" class="form-control" type="number" min="1" max="31" required> 
-	  								<input id="month" name="month" placeholder="month" class="form-control" type="number" min="1" max="12" required>
-	  								<input id="year" name="year" placeholder="year" class="form-control" type="number" min="1900" max="2016" required>
+	  								<input id="day" name="day" placeholder="day" class="form-control" type="number" min="1" max="31" value={{user.dob.day}} required> 
+	  								<input id="month" name="month" placeholder="month" class="form-control" type="number" min="1" max="12" value={{user.dob.month}} required>
+	  								<input id="year" name="year" placeholder="year" class="form-control" type="number" min="1900" max="2016" value={{user.dob.year}} required>
 	  							</div>
 							</div>
 							<div class="form-group">
 	  							<label class="col-md-4 control-label" for="nat">Nationality: </label>  
 	  							<div class="col-md-4">
-	  								<input id="nat" name="nat" placeholder="Nationality" class="form-control" type="text" required> 
+	  								<input id="nat" name="nat" placeholder="Nationality" class="form-control" type="text" value={{user.nat}} required> 
 	  							</div>
 							</div>
-							<center><input type="submit" name="SignUp" class="btn btn-success" value="Sign Up"></center>
+							<center><input type="submit" name="change" class="btn btn-success" value="Change Settings"></center>
 						</form>
 					</div>
 				</div>
+		</div>
+		</center>
 		</div>
 	</div>
 </body>
 
 
 </html>
-

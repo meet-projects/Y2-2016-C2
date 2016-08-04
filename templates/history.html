@@ -2,7 +2,7 @@
 <html style="background-color: #D3D3D3">
 <head>
   <title>
-
+  {{user.name}}'s History
   </title>
       <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,7 +28,7 @@
 			<a href="{{ url_for('home', user=user.id) }}" class="active">
 			Natioks
 			</a>
-			<li class="sidebar-brand">Welcome back, {{ user.name }}!</li>
+			<li class="sidebar-brand">Welcome back!</li>
 			</li>
 			<li>
 				<a href="{{url_for('Signout')}}">Sign out</a>
@@ -45,17 +45,10 @@
 
 
 
+		<div class="main">
 
-
-		<center><h1>Book History</h1></center>
-
-		<table class="table">
-			<thead>
-				<th colspan="y">
-			</thead>
-
-
-		</table>
+			<center><h1>Book History</h1></center>
+		</div>
 	</div>
 </body>
 

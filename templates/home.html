@@ -3,7 +3,7 @@
 <head>
 <head>
   <title>
-
+  Natioks Homepage
   </title>
       <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,7 +32,7 @@
 			<a href="{{ url_for('home', user=user.id) }}" class="active">
 			Natioks
 			</a>
-			<li class="sidebar-brand"><a href="#">Welcome back, {{ user.name }}!</a></li>
+			<li class="sidebar-brand"><a href="#">Welcome back!</a></li>
 			</li>
 			<li>
 				<a href="{{url_for('Signout')}}">Sign out</a>
@@ -44,6 +44,11 @@
 				<a href="{{ url_for('Genres') }}">Genres</a>
 			</li>
 			<li><a href="{{ url_for('history', user=user.id) }} ">History</a></li>
+			<li>
+				<a href="{{ url_for('settings', user=user.id) }}">
+					Settings
+				</a>
+			</li>
 			</ul>
 		</div>
 
