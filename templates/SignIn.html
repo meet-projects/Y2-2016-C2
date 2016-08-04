@@ -40,29 +40,35 @@
 			</li>
 			</ul>
 		</div>
-		<div class="container">
-			<!-- Text input-->
-			<div>
-			<form action="{{ url_for('Signin') }}" method="post" class="form-horizontal">
-				<div class="form-group">
-  					<label class="col-md-4 control-label" for="email">E-mail:</label>  
-  						<div class="col-md-4">
-  							<input id="email" name="email" placeholder="E-mail" class="form-control input-md" type="email"> 
-  						</div>
-				</div>
+		<div class="main">
+			<div id="login">
+				<!-- Text input-->
+				<div>
+					<form action="{{ url_for('Signin') }}" method="post" class="form-horizontal">
+						<div class="form-group">
+		  					<label class="col-md-4 control-label" for="email">E-mail:</label>  
+		  						<div class="col-md-4">
+		  							<input id="email" name="email" placeholder="E-mail" class="form-control input-md" type="email"> 
+		  						</div>
+						</div>
 
-				<div class="form-group">
-  					<label class="col-md-4 control-label" for="password">Password: </label>  
-  						<div class="col-md-4">
-  							<input id="password" name="password" placeholder="Password" class="form-control input-md" type="password"> 
-  						</div>
+						<div class="form-group">
+		  					<label class="col-md-4 control-label" for="password">Password: </label>  
+		  						<div class="col-md-4">
+		  							<input id="password" name="password" placeholder="Password" class="form-control input-md" type="password"> 
+		  						</div>
+						</div>
+						<div class="form-group">
+							<center><label class="control-label"><a href="{{ url_for('signup') }}">Dont have an account? Sign up now.</a></label></center>
+						</div>
+						<center><input type="submit" name="submit" class="btn btn-success" value="Log in"></center>
+					</form>
 				</div>
-				<div class="form-group">
-					<center><label class="control-label"><a href="{{ url_for('signup') }}">Dont have an account? Sign up now.</a></label></center>
-				</div>
-				<center><input type="submit" name="submit" class="btn btn-success" value="Log in"></center>
-			</form>
 			</div>
+		</div>
+
+
+		<div id="login"> Test123
 		</div>
 	</div>
 

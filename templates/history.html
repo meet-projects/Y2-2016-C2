@@ -34,7 +34,7 @@
 			<a href="{{ url_for('home', user=user.id) }}" class="active">
 			Natioks
 			</a>
-			<li class="sidebar-brand"><a href="#">Welcome back, {{ user.name }}!</a></li>
+			<li class="sidebar-brand">Welcome back, {{ user.name }}!</li>
 			</li>
 			<li>
 				<a href="{{url_for('Signout')}}">Sign out</a>
@@ -52,9 +52,16 @@
 
 
 
-		<div class="main">
-			test
-		</div>
+
+		<center><h1>Book History</h1></center>
+
+		<table class="table">
+			<thead>
+				<th colspan="y">
+			</thead>
+
+
+		</table>
 	</div>
 </body>
 
