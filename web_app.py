@@ -7,7 +7,12 @@ app = Flask(__name__)
 # from database_setup import Base, Potato, Monkey
 from database_setup import Base, Books, Users, Authors, Reviews, association_table
 
+<<<<<<< HEAD
+from datetime import datetime
+from sqlalchemy import create_engine
+=======
 from sqlalchemy import create_engine, desc
+>>>>>>> 3a896b92901c1bbfb2225e7a063efc4e7242d7af
 from sqlalchemy.orm import sessionmaker
 engine = create_engine('sqlite:///project.db')
 Base.metadata.bind = engine
@@ -63,9 +68,7 @@ def book(book_id):
 	author=session.query(Authors).filter_by(id=book.authorid).one()
 	return render_template("view_book.html", book=book, author=author)
 
-@app.route('/signup')
-def signup():
-	return
+
 
 @app.route('/author')
 def author():
@@ -91,6 +94,30 @@ def history(user):
 			icur+=1
 		i-=1
 	return render_template('history.html', user=user, booksp=booksp, booksi=booksi)
+
+@app.route('/signUp', methods=['GET', 'POST'])
+def signUp():
+	if request.method == 'GET':
+		return render_template("SignUp.html")
+	else:
+		new_name = request.form['name']
+		new_email = request.form['email']
+		new_password = request.form['password']
+		new_day = request.form['day']
+		new_month = request.form['month']
+		new_year = request.form['year']
+		new_nat = request.form['nat']
+		
+		new_dob =  datetime(year=int(new_year), month=int(new_month), day=int(new_day))
+	#	new_dob = datetime.strptime(new_day+' '+new_month+' '+new_year,'%b %d %Y')
+
+
+		user = Users(name = new_name, email = new_email, password = new_password, dob = new_dob , nat = new_nat)
+		session.add(user)
+		session.commit()
+		
+
+		return redirect(url_for('main'))
 
 
 if __name__ == '__main__':
