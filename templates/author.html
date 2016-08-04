@@ -4,12 +4,52 @@
 	<title>
 		author's books
 	</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+<meta name="author" content="">
+<link href="static/sidebar.css" rel="stylesheet">
+
+
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  
+  
 </head>
-<h1>Author's Books</h1>
+
 <body>
+	<div id="body_stuff">
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+			<li class="sidebar-brand">
+			<a href="{{ url_for('main') }}" class="active">
+			Natioks
+			</a>
+			</li>
+			<li>
+				<a href="{{url_for('Signin')}}">Sign in</a>
+			</li>
+			<li>
+			<a href="{{url_for('Nationalities') }}">Nationalities </a>
+			</li>
+			<li>
+				<a href="{{ url_for('Genres') }}">Genres</a>
+			</li>
+			</ul>
+		</div>
+		<div class="main">
+			<h1>Author's Books</h1>
 {% for author in authors%}
 	<h3>{{author.id}}.</h3><br>
-	<img src="{{author.picture}}" width="104" height="142"><br>
+	<img src="{{ url_for('static', filename=author.picture) }}" width="104" height="142"><br>
 	<h3>Name: {{author.name}}</h3>
 	<h3>Date Of Birth: {{author.dob}}</h3>
 	<h3>Nationality: {{author.nat}}</h3>
@@ -17,5 +57,6 @@
 {%endfor%}
 
 
-</body>
-</html>
+		</div>
+	</div>
+	</html>

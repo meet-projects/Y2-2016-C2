@@ -19,14 +19,10 @@ class Users(Base):
 	name=Column(String(40))
 	email=Column(String(40))
 	password=Column(String(40))
-	int1=Column(String)
-	int2=Column(String)
-	int3=Column(String)
-	int4=Column(String)
-	int5=Column(String)
 	dob=Column(Date)
 	nat=Column(String)
 	read=relationship("Books", secondary=association_table)
+	genres = relationship('Genre', secondary='user_to_genre', uselist=True)
 
 
 
@@ -59,6 +55,12 @@ class BookToGenre(Base):
 	__tablename__='book_to_genre'
 	id=Column(Integer, primary_key=True)
 	book_id = Column(Integer, ForeignKey('books.id'))
+	genre_id = Column(Integer, ForeignKey('genre.id'))
+
+class UserToGenre(Base):
+	__tablename__='user_to_genre'
+	id=Column(Integer, primary_key=True)
+	user_id = Column(Integer, ForeignKey('users.id'))
 	genre_id = Column(Integer, ForeignKey('genre.id'))
 
 class Authors(Base):
