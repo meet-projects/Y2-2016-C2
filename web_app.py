@@ -30,8 +30,9 @@ def home(user):
 
 @app.route('/nationalities')
 def Nationalities():
-	books = session.query(Books).filter_by(nat="Palestinian").all()
-	return render_template("nationality.html", books=books)
+	booksp = session.query(Books).filter_by(nat="Palestinian").all()
+	booksi = session.query(Books).filter_by(nat="Israeli").all()
+	return render_template("nationality.html", booksp=booksp, booksi=booksi)
 
 
 
@@ -63,6 +64,10 @@ def book(book_id):
 @app.route('/signup')
 def signup():
 	return
+
+@app.route('/author')
+def author():
+	return render_template('author.html')
 
 
 
