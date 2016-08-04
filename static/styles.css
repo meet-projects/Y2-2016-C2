@@ -9,7 +9,7 @@ html {
 	background-color: #D3D3D3;
 }
 #login {
-	text-align: right;
+	vertical-align: middle;
 }
 
 div {
@@ -20,4 +20,11 @@ div {
 	border: 1px solid grey;
 	border-radius:10px;
 	margin-top:20px;
+}
+
+.main {
+	position: absolute;
+	left: 250px;
+	height: 100%;
+	width: 80%;
 }

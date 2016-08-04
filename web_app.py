@@ -5,14 +5,15 @@ app = Flask(__name__)
 ### Add your tables here!
 # For example:
 # from database_setup import Base, Potato, Monkey
-from database_setup import Base, Books, Users, Authors, Reviews
+from database_setup import Base, Books, Users, Authors, Reviews, association_table
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 engine = create_engine('sqlite:///project.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
 
 
 #YOUR WEB APP CODE GOES HERE
@@ -25,7 +26,7 @@ def main():
 
 @app.route('/home/<int:user>')
 def home(user):
-	user=session.query(Users).filter_by(id=user).one()
+	user=session.query(Users).filter_by(id=user).first()
 	return render_template('home.html', user=user)
 
 @app.route('/nationalities')
@@ -48,8 +49,9 @@ def Signin():
 		results=session.query(Users).filter_by(password=password, email=email).all()
 		if (len(results)>0):
 			return redirect(url_for('home', user=results[0].id))
-	else:
-		return render_template('SignIn.html')
+		else:
+			return render_template('SignIn.html')
+	return render_template("SignIn.html")
  
 @app.route('/signout')
 def Signout():
@@ -72,7 +74,21 @@ def author():
 @app.route('/history/<int:user>')
 def history(user):
 	user=session.query(Users).filter_by(id=user).one()
-	return render_template('History.html', user=user)
+	books=session.query(association_table).filter_by(user_id=user.id).all()
+	booksp=[]
+	booksi=[]
+	i=len(books)-1
+	pcur=0
+	icur=0
+	while (len(booksp)<5 and len(booksi)<5):
+		if (books[i].nat=="Palestinian"):
+			booksp.append(books[i])
+			pcur+=1
+		else:
+			booksi.append(books[i])
+			icur+=1
+		i-=1
+	return render_template('history.html', user=user, booksp=booksp, booksi=booksi)
 
 
 if __name__ == '__main__':
