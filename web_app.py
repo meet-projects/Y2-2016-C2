@@ -124,7 +124,9 @@ def signUp():
 		return redirect(url_for('main'))
 
 @app.route('/genres')
-def genres():
+def Genres(user):
+	if (user!=0):
+		user=session.query(Users).filter_by(id=user).first()
 	genres = session.query(Genre).all()
 	return render_template('genre.html', genres=genres)
 
