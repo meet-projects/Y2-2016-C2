@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request , redirect, url_for
 app = Flask(__name__)
 
 # SQLAlchemy stuff
@@ -22,8 +22,9 @@ def main():
 
 @app.route('/nationalities')
 def Nationalities():
-	books = session.query(Books).filter_by(nat="Palestinian").all()
-	return render_template("nationality.html", books=books)
+	booksp = session.query(Books).filter_by(nat="Palestinian").all()
+	booksi = session.query(Books).filter_by(nat="Israeli").all()
+	return render_template("nationality.html", booksp=booksp, booksi=booksi)
 
 
 
@@ -31,9 +32,16 @@ def Nationalities():
 def Genres():
 	return
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def Signin():
-	return render_template('SignIn.html')
+	if (request.method=='POST'):
+		password=request.form['password']
+		email=request.form['email']
+		results=session.query(Users).filter_by(password=password, email=email).all()
+		if (len(results)>0):
+			return redirect(url_for('main'))
+	else:
+		return render_template('SignIn.html')
  
 
 @app.route('/book/<int:book_id>')

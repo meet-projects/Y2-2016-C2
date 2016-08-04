@@ -4,46 +4,97 @@
 
 </head>
 <body>
-{%for book in books%}
-	<img src="{{book.picture}}" width="104" height="142">
-	<h2>
-	Name: 
-	{{book.name}}
-	.<br>
-	Genre: 
-	{{book.type1}} 
-	{%if book.type2!="N/A"%}
-		, 
-		{{book.type2}}
-		{%if book.type3!="N/A"%}
+<h1>Palestinian:<br>
+Top 5:</h1>
+{%for bookp in booksp%}
+	{%if bookp.id<6%}
+		<h2>{{bookp.id}}
+		.</h2>
+		<img src="{{bookp.picture}}" width="104" height="142">
+		<h2>
+		Name: 
+		{{bookp.name}}
+		.<br>
+		Genre: 
+		{{bookp.type1}} 
+		{%if bookp.type2!="N/A"%}
 			, 
-			{{book.type3}}
-			{%if book.type4!="N/A"%}
+			{{bookp.type2}}
+			{%if bookp.type3!="N/A"%}
 				, 
-				{{book.type4}}
-				{%if book.type5!="N/A"%}
-				, 
-				{{book.type5}}
-				.
-			{%else%}
-				.
-			{%endif%}
+				{{bookp.type3}}
+				{%if bookp.type4!="N/A"%}
+					, 
+					{{bookp.type4}}
+					{%if bookp.type5!="N/A"%}
+					, 
+					{{bookp.type5}}
+					.
+				{%else%}
+					.
+				{%endif%}
+				{%else%}
+					.
+				{%endif%}
 			{%else%}
 				.
 			{%endif%}
 		{%else%}
 			.
 		{%endif%}
-	{%else%}
+		<br>Author:
+		{{bookp.author.name}}
 		.
+		</h2>
+		<br>
 	{%endif%}
-	<br>Author:
-	{{book.author.name}}
-	.
-	</h2>
-	<br>
+{%endfor%}
 
 
+<h1>Israeli:<br>
+Top 5:</h1>
+{%for booki in booksi%}
+	{%if booki.id<6%}
+		<h2>{{booki.id}}
+		.</h2>
+		<img src="{{booki.picture}}" width="104" height="142">
+		<h2>
+		Name: 
+		{{booki.name}}
+		.<br>
+		Genre: 
+		{{booki.type1}} 
+		{%if booki.type2!="N/A"%}
+			, 
+			{{booki.type2}}
+			{%if booki.type3!="N/A"%}
+				, 
+				{{booki.type3}}
+				{%if booki.type4!="N/A"%}
+					, 
+					{{booki.type4}}
+					{%if booki.type5!="N/A"%}
+					, 
+					{{booki.type5}}
+					.
+				{%else%}
+					.
+				{%endif%}
+				{%else%}
+					.
+				{%endif%}
+			{%else%}
+				.
+			{%endif%}
+		{%else%}
+			.
+		{%endif%}
+		<br>Author:
+		{{booki.author.name}}
+		.
+		</h2>
+		<br>
+	{%endif%}
 {%endfor%}
 
 </body>
