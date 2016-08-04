@@ -91,7 +91,15 @@ def history(user):
 	books=session.query(association_table).filter_by(user_id=user.id).all()
 	booksp=[]
 	booksi=[]
-	print(len(books))
+	i=len(books)-1
+	while (len(booksp)<5 and len(booksi)<5 and i>len(books)):
+		isread=session.query(association_table).filter_by(user_id=user.id, book_id=books[i].id).scalar()
+		if (not isread):
+			if (books[i].nat=="Palestinian"):
+				booksp.append(books[i])
+			else:
+				booksi.append(books[i])
+		i-=1
 	return render_template('history.html', user=user, booksp=booksp, booksi=booksi)
 
 @app.route('/signUp', methods=['GET', 'POST'])
@@ -109,7 +117,7 @@ def signUp():
 		new_year = request.form['year']
 		new_nat = request.form['nat']
 		new_dob =  datetime(year=int(new_year), month=int(new_month), day=int(new_day))
-	#	new_dob = datetime.strptime(new_day+' '+new_month+' '+new_year,'%b %d %Y')
+	#   new_dob = datetime.strptime(new_day+' '+new_month+' '+new_year,'%b %d %Y')
 
 		user = Users(name = new_name, email = new_email, password = new_password, dob = new_dob , nat = new_nat)
 		session.add(user)
@@ -123,13 +131,14 @@ def signUp():
 
 		return redirect(url_for('main'))
 
-@app.route('/genres')
+@app.route('/genres/')
 def Genres(user):
+	genres = session.query(Genre).all()
 	if (user!=0):
 		user=session.query(Users).filter_by(id=user).first()
-	genres = session.query(Genre).all()
-	return render_template('genre.html', genres=genres)
+		return render_template('genre.html',user=user.id, genres=genres)
+	return render_template('genre.html', user=0, genres=genres)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+	app.run(debug=True)
