@@ -8,7 +8,9 @@ app = Flask(__name__)
 from database_setup import Base, Books, Users, Authors, Reviews, association_table,Genre
 
 from datetime import datetime
+
 from sqlalchemy import create_engine, desc
+
 from sqlalchemy.orm import sessionmaker
 engine = create_engine('sqlite:///project.db')
 Base.metadata.bind = engine
