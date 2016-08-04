@@ -56,7 +56,9 @@ def signup():
 
 @app.route('/author')
 def author():
-	return render_template('author.html')
+	books = session.query(Books).all()
+	authors = session.query(Authors).all()
+	return render_template('author.html', authors=authors, books=books)
 
 
 
