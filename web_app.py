@@ -7,6 +7,7 @@ app = Flask(__name__)
 # from database_setup import Base, Potato, Monkey
 from database_setup import Base, Books, Users, Authors, Reviews
 
+from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 engine = create_engine('sqlite:///project.db')
@@ -61,9 +62,7 @@ def book(book_id):
 	author=session.query(Authors).filter_by(id=book.authorid).one()
 	return render_template("view_book.html", book=book, author=author)
 
-@app.route('/signup')
-def signup():
-	return
+
 
 @app.route('/author')
 def author():
@@ -73,6 +72,30 @@ def author():
 def history(user):
 	user=session.query(Users).filter_by(id=user).one()
 	return render_template('History.html', user=user)
+
+@app.route('/signUp', methods=['GET', 'POST'])
+def signUp():
+	if request.method == 'GET':
+		return render_template("SignUp.html")
+	else:
+		new_name = request.form['name']
+		new_email = request.form['email']
+		new_password = request.form['password']
+		new_day = request.form['day']
+		new_month = request.form['month']
+		new_year = request.form['year']
+		new_nat = request.form['nat']
+		
+		new_dob =  datetime(year=int(new_year), month=int(new_month), day=int(new_day))
+	#	new_dob = datetime.strptime(new_day+' '+new_month+' '+new_year,'%b %d %Y')
+
+
+		user = Users(name = new_name, email = new_email, password = new_password, dob = new_dob , nat = new_nat)
+		session.add(user)
+		session.commit()
+		
+
+		return redirect(url_for('main'))
 
 
 if __name__ == '__main__':
