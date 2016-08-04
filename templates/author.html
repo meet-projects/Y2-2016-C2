@@ -7,17 +7,15 @@
 </head>
 <h1>Author's Books</h1>
 <body>
-<ol>
-	<li>{{ friend.name }}
-    {{ friend.gender }}
-    {{ friend.nationality }}
-    {{ friend.hometown }}</li>
-    <li>
-    {{ friend.name }}
-    {{ friend.gender }}
-    {{ friend.nationality }}
-    {{ friend.hometown }}</li>
-</ol>
-	
+{% for author in authors%}
+	<h3>{{author.id}}.</h3><br>
+	<img src="{{author.picture}}" width="104" height="142"><br>
+	<h3>Name: {{author.name}}</h3>
+	<h3>Date Of Birth: {{author.dob}}</h3>
+	<h3>Nationality: {{author.nat}}</h3>
+	<h3>Books: {{ author.books|join(', ', attribute='name') }}.</h3>
+{%endfor%}
+
+
 </body>
 </html>
