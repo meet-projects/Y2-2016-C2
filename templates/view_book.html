@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html style="background-color: #D3D3D3">
 <head>
   <title>
-
+  {{user.name}}'s History
   </title>
       <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,69 +21,121 @@
 </head>
 
 <body>
-<div id="sidebar-wrapper">
-	<ul class="sidebar-nav">
-	<li class="sidebar-brand">
-	<a href="{{ url_for('main') }}">
-	Natioks
-	</a>
-	</li>
-	<li>
-		<a href="{{url_for('Signin')}}">Sign in</a>
-	</li>
-	<li>
-	<a href="{{url_for('Nationalities') }}">Nationalities </a>
-	</li>
-	<li>
-		<a href="{{ url_for('Genres') }}">Genres</a>
-	</li>
-	</ul>
+	<div id="body_stuff">
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+			{% if user == None %}
+			<li class="sidebar-brand">
+			<a href="{{ url_for('main') }}" class="active">
+			Natioks
+			</a>
+			</li>
+			<li>
+				<a href="{{url_for('Signin')}}">Sign in</a>
+			</li>
+			<li>
+			<a href="{{url_for('Nationalities') }}">Nationalities </a>
+			</li>
+			<li>
+				<a href="{{ url_for('Genres') }}">Genres</a>
+			{%else%}
+				<li class="sidebar-brand">
+			<a href="{{ url_for('home') }}" class="active">
+			Natioks
+			</a>
+			<li class="sidebar-brand"><a href="#">Welcome back!</a></li>
+			</li>
+			<li>
+			<a href="{{url_for('Nationalities') }}">Nationalities </a>
+			</li>
+			<li>
+				<a href="{{ url_for('Genres') }}">Genres</a>
+			</li>
+			<li><a href="{{ url_for('history') }} ">History</a></li>
+			<li>
+				<a href="{{ url_for('settings') }}">
+					Settings
+				</a>
+			</li>
+						<li>
+				<a href="{{url_for('Signout')}}">Sign out</a>
+			</li>
+			{% endif %}
+			</ul>
+		</div>
+
+		<div class="main">
+			<center><h2>{{book.name}}</h2></center>
+			<table class="table">
+				<td>
+					<center><img src="{{ url_for('static', filename=book.picture) }}" width="115px" height="175px"><center>
+				</td>
+				<td>
+					<b><u>Name: </u></b>{{book.name}}<br>
+					<b><u>Author: </u></b><a href="{{ url_for('author', author=book.authorid) }}">{{book.author.name}}</a><br>
+					<b><u>Nationality: </u></b>{{book.nat}}<br>
+					<b><u>Language: </u></b>{{book.lang}}<br>
+					<b><u>Genre(s): </u></b>{% for genre in book.genres %}
+					{% if book.genres.index(genre)>0  %}
+					,
+					{%endif%}
+					{{genre.name}}
+					{% endfor %}
 
 
+				</td>
+			</table>
+
+
+			<div>
+				{% if user != None %}
+				<form class="form" action="{{ url_for('book', book_id=book.id) }}" method="post">
+					<table class="table">
+						<thead>
+							<th>Rating</th>
+							<th>Review</th>
+						</thead>
+
+						<tbody>
+							<tr>
+								<td>
+									<input type="number" name="rating" required min=1 max=5>
+								</td>
+								<td>
+									<textarea name="review" placeholder="Put your review of the book here"></textarea>
+								</td>
+								<td>
+									<input type="submit" class="btn btn-primary" value="Submit Review">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+					{% endif %}
+				<table>
+					<thead>
+						<th>User</th>
+						<th>Rating</th>
+						<th>Review</th>
+					</thead>
+					{% for review in reviews %}
+					<tr>
+						<td>
+							{{users(reviews.index(review)).name}}
+						</td>
+						<td>
+							{{review.rating}}
+						</td>
+						<td>
+							{{review.review}}
+						</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
-<center><h1>{{ book.name }}</h1></center>
-<table>
-<thead>
-<th>Name</th>
-<th>Author</th>
-<th>Nationality</th>
-<th>Language</th>
-<th>Type</th>
-<th>Rating</th>
-</thead>
-
-<tbody>
-	<tr>
-	<td>
-		{{ book.name }}
-	</td>
-	<td>{{author.name}}</td>
-	<td>{{book.nat}}</td>
-	<td>{{book.lang}}</td>
-	<td>{% if book.type1!="N/A" %}
-	{{book.type1}}
-	{%endif%}
-	{% if book.type2!="N/A" %}
-	, {{book.type2}}
-	{%endif%}
-	{% if book.type3!="N/A" %}
-	, {{book.type3}}
-	{%endif%}
-	{% if book.type4!="N/A" %}
-	, {{book.type4}}
-	{%endif%}
-	{% if book.type5!="N/A" %}
-	, {{book.type5}}
-	{%endif%}
-	</td>
-	<td>
-		{{book.rating}}
-	</td>
-	</tr>
-</tbody>
-</table>
-
 </body>
-
-
 </html>
+

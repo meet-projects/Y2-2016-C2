@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html style="background-color: #D3D3D3">
 <head>
-	<title>
-		author's books
-	</title>
-    <meta charset="utf-8">
+<head>
+  <title>
+  Natioks Homepage
+  </title>
+      <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
     <meta name="description" content="">
 <meta name="author" content="">
-<link href="static/sidebar.css" rel="stylesheet">
-
-
-  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-  <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link href="{{ url_for('static', filename='sidebar.css') }}" rel="stylesheet">
+  	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+  	<!-- Latest compiled and minified CSS --> 
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<!-- jQuery library --> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+	<!-- Latest compiled JavaScript --> 
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+  
+</head>
   
   
 </head>
@@ -29,6 +28,29 @@
 	<div id="body_stuff">
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
+			{% if user != None %}
+			<li class="sidebar-brand">
+			<a href="{{ url_for('home') }}" class="active">
+			Natioks
+			</a>
+			<li class="sidebar-brand"><a href="#">Welcome back!</a></li>
+			</li>
+			<li>
+			<a href="{{url_for('Nationalities') }}">Nationalities </a>
+			</li>
+			<li>
+				<a href="{{ url_for('Genres') }}">Genres</a>
+			</li>
+			<li><a href="{{ url_for('history') }} ">History</a></li>
+			<li>
+				<a href="{{ url_for('settings') }}">
+					Settings
+				</a>
+			</li>
+						<li>
+				<a href="{{url_for('Signout')}}">Sign out</a>
+			</li>
+			{%else%}
 			<li class="sidebar-brand">
 			<a href="{{ url_for('main') }}" class="active">
 			Natioks
@@ -43,20 +65,48 @@
 			<li>
 				<a href="{{ url_for('Genres') }}">Genres</a>
 			</li>
+				{%endif%}
 			</ul>
 		</div>
+
 		<div class="main">
-			<h1>Author's Books</h1>
-{% for author in authors%}
-	<h3>{{author.id}}.</h3><br>
-	<img src="{{ url_for('static', filename=author.picture) }}" width="104" height="142"><br>
-	<h3>Name: {{author.name}}</h3>
-	<h3>Date Of Birth: {{author.dob}}</h3>
-	<h3>Nationality: {{author.nat}}</h3>
-	<h3>Books: {{ author.books|join(', ', attribute='name') }}.</h3>
-{%endfor%}
+			<center><h3>{{author.name}}</h3></center>
+				<table class="table">
+				<td><center><img src="{{ url_for('static', filename=author.picture) }}" width="150px" style="150px"></center></td>
+				<td><u><b>Name:</b></u> {{author.name}}<br>
+				<u><b>Date of Birth: </b></u>{{author.dob}}<br>
+				<u><b>Nationality: </b></u> {{author.nat}}<br>
+				<u><b>Language: </b></u>{{author.lang}}<br>
+				</td>
+				</table>
 
 
+				<br><br><br><br><br><br><br>
+				<h4>Books by {{author.name}}:</h4>
+				<table class="table table-condensed">
+					<tbody>
+					<tr>
+						{% for book in books %}	
+						{% if books.index(book)%5==0 %}
+						</tr>
+						<tr>
+						{%endif%}
+						<td><center><img src="{{ url_for('static', filename=book.picture) }}" width="115px" height="175px"><br></center>
+						<u><b>Name: </b></u><a href="{{ url_for('book', book_id=book.id) }}">{{book.name}}<br></a>
+						<u><b>Language: </b></u>{{book.lang}}<br>
+						<u><b>Genre(s): </b></u>{% for genre in book.genres %}
+					{% if book.genres.index(genre)>0  %}
+					,
+					{%endif%}
+					{{genre.name}}
+					{% endfor %}<br>
+						</td>
+						{%endfor%}	
+						</tr>			
+					</tbody>
+				</table>
 		</div>
+
 	</div>
-	</html>
+</body>
+</html>
