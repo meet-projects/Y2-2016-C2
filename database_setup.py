@@ -12,7 +12,6 @@ association_table = Table('association', Base.metadata,
     Column('book_id', Integer, ForeignKey('books.id'))
 )
 
-
 class Users(Base):
 	__tablename__='users'
 	id=Column(Integer, primary_key=True)
@@ -23,7 +22,19 @@ class Users(Base):
 	nat=Column(String)
 	read=relationship("Books", secondary=association_table)
 	genres = relationship('Genre', secondary='user_to_genre', uselist=True)
+	review=relationship('Reviews', secondary='user_to_review', uselist=True)
 
+class UserToReviews(Base):
+	__tablename__='user_to_review'
+	id=Column(Integer, primary_key=True)
+	user=Column(Integer, ForeignKey('users.id'))
+	review=Column(Integer, ForeignKey('reviews.id'))
+
+class BooksToReviews(Base):
+	__tablename__='book_to_review'
+	id=Column(Integer, primary_key=True)
+	book=Column(Integer, ForeignKey('books.id'))
+	review=Column(Integer, ForeignKey('reviews.id'))
 
 
 class Genre(Base):
@@ -42,9 +53,9 @@ class Books(Base):
 	author = relationship("Authors")
 	lang=Column(String)
 	nat=Column(String)
-	review=Column(Integer, ForeignKey('reviews.rating'))
-	picture=Column(String)
+	review=relationship('Reviews', secondary='book_to_review', uselist=True)
 	genres = relationship('Genre', secondary='book_to_genre', uselist=True)
+	picture=Column(String)
 
 class BookToGenre(Base):
 	__tablename__='book_to_genre'
@@ -73,8 +84,8 @@ class Authors(Base):
 class Reviews(Base):
 	__tablename__='reviews'
 	id=Column(Integer, primary_key=True)
-	book_id=Column(Integer, ForeignKey('books.id'), nullable=False)
-	user_id=Column(Integer, ForeignKey('users.id'), nullable=False)
+	book=relationship('Books', secondary='book_to_review')
+	user=relationship('Users', secondary='user_to_review')
 	rating=Column(Integer)
 	review=Column(String(300))
 

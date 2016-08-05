@@ -30,7 +30,7 @@
 			<ul class="sidebar-nav">
 			{% if user != None %}
 			<li class="sidebar-brand">
-			<a href="{{ url_for('home', user=user.id) }}" class="active">
+			<a href="{{ url_for('home') }}" class="active">
 			Natioks
 			</a>
 			<li class="sidebar-brand"><a href="#">Welcome back!</a></li>
@@ -64,6 +64,7 @@
 			</li>
 			<li>
 				<a href="{{ url_for('Genres') }}">Genres</a>
+			</li>
 				{%endif%}
 			</ul>
 		</div>
@@ -72,99 +73,54 @@
 
 
 		<div class="main">
-			<h1>Palestinian:<br>
-Top 5:</h1>
-{%for bookp in booksp%}
-	{%if bookp.id<6%}
-		<h2>{{bookp.id}}
-		.</h2>
-		<img src="{{ url_for('static', filename=bookp.picture) }}" width="104" height="142">
-		<h2>
-		Name: 
-		{{bookp.name}}
-		.<br>
-		Genre: 
-		{{bookp.type1}} 
-		{%if bookp.type2!="N/A"%}
-			, 
-			{{bookp.type2}}
-			{%if bookp.type3!="N/A"%}
-				, 
-				{{bookp.type3}}
-				{%if bookp.type4!="N/A"%}
-					, 
-					{{bookp.type4}}
-					{%if bookp.type5!="N/A"%}
-					, 
-					{{bookp.type5}}
-					.
-				{%else%}
-					.
-				{%endif%}
-				{%else%}
-					.
-				{%endif%}
-			{%else%}
-				.
-			{%endif%}
-		{%else%}
-			.
-		{%endif%}
-		<br>Author:
-		{{bookp.author.name}}
-		.
-		</h2>
-		<br>
-	{%endif%}
-{%endfor%}
+			<table class="table">
+				<thead>
+					<center><h3>Palestinian Books</h3></center>
+				</thead>
+				<tbody>
+					<tr>
+					{% for book in booksp %}
+					<td><center><img src="{{ url_for('static', filename=book.picture) }}" width="115px" height="175px"></center><br>
+					<b><u>Name: </u></b><a href="{{ url_for('book', book_id=book.id) }}">{{book.name}}</a><br>
+					<b><u>Author: </u></b><a href="{{url_for('author', author=book.author.id) }}">{{book.author.name}}</a><br>
+					<b><u>Language: </u></b>{{book.lang}}<br>
+					<b><u>Genre(s): </u></b>{% for name in book.genres %}{{name.name}}{%endfor%}<br>
+					</td>
+					{% endfor %}
+					</tr>
+				</tbody>
+			</table>
 
 
-<h1>Israeli:<br>
-Top 5:</h1>
-{%for booki in booksi%}
-	{%if booki.id<6%}
-		<h2>{{booki.id}}
-		.</h2>
-		<img src="{{ url_for('static', filename=booki.picture) }}" width="104" height="142">
-		<h2>
-		Name: 
-		{{booki.name}}
-		.<br>
-		Genre: 
-		{{booki.type1}} 
-		{%if booki.type2!="N/A"%}
-			, 
-			{{booki.type2}}
-			{%if booki.type3!="N/A"%}
-				, 
-				{{booki.type3}}
-				{%if booki.type4!="N/A"%}
-					, 
-					{{booki.type4}}
-					{%if booki.type5!="N/A"%}
-					, 
-					{{booki.type5}}
-					.
-				{%else%}
-					.
-				{%endif%}
-				{%else%}
-					.
-				{%endif%}
-			{%else%}
-				.
-			{%endif%}
-		{%else%}
-			.
-		{%endif%}
-		<br>Author:
-		{{booki.author.name}}
-		.
-		</h2>
-		<br>
-	{%endif%}
-{%endfor%}
+			<br><br><br><br>
+			<table class="table">
+				<thead>
+					<center><h3>Israeli Books</h3></center>
+				</thead>
+				<tbody>
+					<tr>
+					{% for book in booksi %}
+					<td><center><img src="{{ url_for('static', filename=book.picture) }}" width="115px" height="175px"></center><br>
+					<b><u>Name: </u></b><a href="{{ url_for('book', book_id=book.id) }}">{{book.name}}</a><br>
+					<b><u>Author: </u><a href="{{url_for('author', author=book.author.id) }}">{{book.author.name}}</a><br>
+					<b><u>Language: </u></b>{{book.lang}}<br>
+					<b><u>Genre(s): </u></b>{% for genre in book.genres %}
+					{% if book.genres.index(genre)>0  %}
+					,
+					{%endif%}
+					{{genre.name}}
+					{% endfor %}<br>
+					</td>
+					{% endfor %}
+					</tr>
+				</tbody>
+			</table>
 		</div>
-	</div>
+
+
+</div>
+</div>
+</body>
+</html>
 
 

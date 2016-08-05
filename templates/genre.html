@@ -47,7 +47,7 @@
 				<a href="{{ url_for('Genres') }}">Genres</a>
 			{%else%}
 				<li class="sidebar-brand">
-			<a href="{{ url_for('home', user=user.id) }}" class="active">
+			<a href="{{ url_for('home') }}" class="active">
 			Natioks
 			</a>
 			<li class="sidebar-brand"><a href="#">Welcome back!</a></li>
@@ -71,21 +71,27 @@
 			</ul>
 		</div>
 		<div class="main">
-			<h1>Genres</h1>
-{% for g in genres %}
-	<h2>{{g.name}} Books: <br> Top 5:<br></h2>
-	{%for bookg in g.books%}
-		{%if bookg.id<6%}
-			<h3>{{bookg.id}}.
-			<img src="{{bookg.picture}}" width="104" height="142"><br>
-			Name: {{bookg.name}}.<br>
-			Nationality: {{bookg.nat}}.<br>
-			Author: {{bookg.author.name}}.<br>
-			Language: {{bookg.lang}}.<br>
-		{%endif%}
-		</h3>
-	{%endfor%}
-{%endfor%}
+			<center><h1>Genres</h1></center>
+			{% for gen in genres %}
+			<table class="table">
+				<thead>
+				<tr>
+					<center><h3>{{gen.name}} Books</h3></center>
+					<tr>
+				</thead>
+				<tbody>
+					<tr>
+						{%for book in gen.books %}
+						<td><center><img src="{{ url_for('static', filename=book.picture) }}" width="115px" height="175px"></center><br>
+						<b><u>Name:</u></b> <a href="{{ url_for('book', book_id=book.id) }}">{{book.name}}<br></a>
+						<b><u>Author:</u></b> <a href="{{ url_for('author', author=book.author.id) }}">{{book.author.name}}</a><br>
+						<b><u>Language:</u></b> {{book.lang}}
+						</td>
+						{%endfor%}
+					</tr>
+				</tbody>
+			</table>
+			{%endfor%}
 		</div>
 	</div>
 </body>
