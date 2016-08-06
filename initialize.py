@@ -1,7 +1,7 @@
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
 
-from database_setup import Base, Users, Books, Authors, Reviews, Genre, BookToGenre, UserToGenre, association_table
+from database_setup import Base, Users, Books, Authors, Reviews, Genre, BookToGenre, UserToGenre
 from datetime import datetime
 
 engine = create_engine('sqlite:///project.db')

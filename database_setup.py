@@ -7,10 +7,6 @@ from datetime import datetime
 Base = declarative_base()
 
 
-association_table = Table('association', Base.metadata,
-    Column('user_id', Integer, ForeignKey('users.id')),
-    Column('book_id', Integer, ForeignKey('books.id'))
-)
 
 class Users(Base):
 	__tablename__='users'
@@ -20,9 +16,9 @@ class Users(Base):
 	password=Column(String(40))
 	dob=Column(Date)
 	nat=Column(String)
-	read=relationship("Books", secondary=association_table)
 	genres = relationship('Genre', secondary='user_to_genre', uselist=True)
 	review=relationship('Reviews', secondary='user_to_review', uselist=True)
+	books=relationship('Books', secondary='read_books', uselist=True)
 
 class UserToReviews(Base):
 	__tablename__='user_to_review'
@@ -36,6 +32,11 @@ class BooksToReviews(Base):
 	book=Column(Integer, ForeignKey('books.id'))
 	review=Column(Integer, ForeignKey('reviews.id'))
 
+class ReadBooks(Base):
+	__tablename__='read_books'
+	id=Column(Integer, primary_key=True)
+	book=Column(Integer, ForeignKey('books.id'))
+	user=Column(Integer, ForeignKey('users.id'))
 
 class Genre(Base):
 	__tablename__='genre'
@@ -56,6 +57,7 @@ class Books(Base):
 	review=relationship('Reviews', secondary='book_to_review', uselist=True)
 	genres = relationship('Genre', secondary='book_to_genre', uselist=True)
 	picture=Column(String)
+	users=relationship('Users', secondary='read_books', uselist=True)
 
 class BookToGenre(Base):
 	__tablename__='book_to_genre'

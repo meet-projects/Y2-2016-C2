@@ -80,8 +80,16 @@
 					,
 					{%endif%}
 					{{genre.name}}
-					{% endfor %}
-
+					{% endfor %}<br><br>
+					{% if user != None %}
+					<form class="form" method="post" action="{{ url_for('book', book_id=book.id) }}" name="read">
+					{% if book not in user.books %}
+						<input type="submit" name="mark" class="btn btn-success" value="Mark Read">
+					{%elif book in user.books %}
+						<a href="#" class="btn btn-primary btn-success"><span class="glyphicon glyphicon-ok"></span> Book Read </a>
+					{% endif %}
+					</form>
+					{% endif %}
 
 				</td>
 			</table>
@@ -89,7 +97,7 @@
 
 			<div>
 				{% if user != None %}
-				<form class="form" action="{{ url_for('book', book_id=book.id) }}" method="post">
+				<form class="form" action="{{ url_for('Review',book=book.id) }}" method="post" name="review">
 					<table class="table">
 						<thead>
 							<th>Rating</th>
@@ -98,10 +106,10 @@
 
 						<tbody>
 							<tr>
-								<td>
+								<td colspan="5">
 									<input type="number" name="rating" required min=1 max=5>
 								</td>
-								<td>
+								<td >
 									<textarea name="review" placeholder="Put your review of the book here"></textarea>
 								</td>
 								<td>
@@ -112,7 +120,7 @@
 					</table>
 				</form>
 					{% endif %}
-				<table>
+				<table class="table">
 					<thead>
 						<th>User</th>
 						<th>Rating</th>
@@ -121,7 +129,7 @@
 					{% for review in reviews %}
 					<tr>
 						<td>
-							{{users(reviews.index(review)).name}}
+							{{users[reviews.index(review)].name}}
 						</td>
 						<td>
 							{{review.rating}}

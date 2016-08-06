@@ -5,7 +5,7 @@ app.secret_key="this is my project"
 ### Add your tables here!
 # For example:
 # from database_setup import Base, Potato, Monkey
-from database_setup import Base, Books, Users, Authors, Reviews, association_table,Genre,UserToGenre, BooksToReviews, UserToReviews
+from database_setup import Base, Books, Users, Authors, Reviews,Genre,UserToGenre, BooksToReviews, UserToReviews, ReadBooks
 
 from datetime import datetime
 
@@ -30,7 +30,7 @@ def main():
 @app.route('/home')
 def home():
 	user=Query(session['user'])
-	readbooks=dbsession.query(association_table).filter_by(user_id=user.id).all()
+	readbooks=dbsession.query(ReadBooks).filter_by(user=user.id).all()
 
 	books=dbsession.query(Books).all()
 	sortedlist=[]
@@ -69,21 +69,30 @@ def Signout():
 def book(book_id):
 	user=Query(session['user'])
 	book=dbsession.query(Books).filter_by(id=book_id).first()
-	if request.method=='GET':
+	if (request.method=='GET'):
 		author=dbsession.query(Authors).filter_by(id=book.authorid).first()
 		bookreviews=dbsession.query(BooksToReviews).filter_by(book=book.id).all()
+		revusers=[]
 		reviews=[]
-		for review in bookreviews:
-			reviews.append(dbsession.query(Reviews).filter_by(id=review.id))
-		#reviews=dbsession.query(Reviews).filter_by(book.id=book.id)
-		return render_template("view_book.html", book=book, author=author, user=user, reviews=reviews)
+		users=[]
+		i=0
+		if (bookreviews is not None):
+			for review in bookreviews:
+				reviews.append(dbsession.query(Reviews).filter_by(id=review.id).first())
+				revusers.append(dbsession.query(UserToReviews).filter_by(review=review.id).first())
+				users.append(Query(revusers[i].id))
+				i+=1
+		
+		#reviews=dbsession.query(Reviews).filter_by().all()
+		return render_template("view_book.html", book=book, author=author, user=user, reviews=reviews, users=users)
+
 	else:
-		rating=request.form['rating']
-		revtext=request.form['review']
-		reviewmain=Reviews(rating=rating, review=revtext, book=book)
-		dbsession.add(reviewmain)
-		userreview=UserToReviews(user=session['user'], review=reviewmain)
-		dbsession.commit()
+		if ('read' not in request.form):
+			if (request.form['mark'] is not None):
+				read=ReadBooks(user=session['user'], book=book.id)
+				dbsession.add(read)
+				dbsession.commit()
+			return redirect(url_for('book', book_id=book.id))
 
 
 
@@ -114,18 +123,19 @@ def settings():
 @app.route('/history')
 def history():
 	user=Query(session['user'])
-	books=dbsession.query(association_table).filter_by(user_id=user.id).all()
-	booksp=[]
+	history=dbsession.query(ReadBooks).filter_by(user=user.id).all()
 	booksi=[]
-	i=len(books)-1
-	while (len(booksp)<5 and len(booksi)<5 and i>len(books)):
-		isread=dbsession.query(association_table).filter_by(user_id=user.id, book_id=books[i].id).all()
-		if (books[i].nat=="Palestinian" and books[i] not in isread):
-			booksp.append(books[i])
-		elif (books[i].nat=="Israeli" and books[i] not in isread):
-			booksi.append(books[i])
-		i-=1
-	return render_template('history.html', user=user, booksp=booksp, booksi=booksi)
+	booksp=[]
+	if (history is not None):
+		i=len(history)-1
+		while (len(booksi)<5 and len(booksp)<5 and i>0):
+			book=dbsession.query(Books).filter_by(id=history[i].book).first()
+			if (bookx.nat=="Palestinian"):
+				booksp.append(book)
+			else:
+				booksi.append(book)
+			i-=1
+		return render_template('history.html', user=user, booksp=booksp, booksi=booksi)
 
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
@@ -155,6 +165,27 @@ def Genres():
 	user=Query(session['user'])
 	return render_template('genre.html', user=user, genres=genres)
 
+
+@app.route('/review/<int:book>', methods=['POST'])
+def Review(book):
+	user=Query(session['user'])	
+	rating=request.form['rating']
+	revtext=request.form['review']
+	bookrev=dbsession.query(BooksToReviews).filter_by(book=book).all()
+	reviewed=dbsession.query(UserToReviews).filter_by(user=user.id).all()
+	for review in reviewed:
+		if (review in reviewed):
+			return redirect(url_for('book', book_id=book))
+	review=Reviews(rating=rating, review=revtext)
+	dbsession.add(review)
+	dbsession.commit()
+	review=dbsession.query(Reviews).filter_by(rating=rating, review=revtext).first()
+	revuser=UserToReviews(user=user.id, review=review.id)
+	revbook=BooksToReviews(book=book, review=review.id)
+	dbsession.add(revuser)
+	dbsession.add(revbook)
+	dbsession.commit()
+	return redirect(url_for('book', book_id=book))
 
 def Query(id):
 	return dbsession.query(Users).filter_by(id=id).first()
