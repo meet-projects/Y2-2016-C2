@@ -62,11 +62,16 @@
 			{% for book in books %}
 			<td>
 			<center>
-				<img src="{{ url_for('static', filename=book.picture) }}"><br>
-				{{ book.name }}<br>
-				{{ book.author.name }}<br>
-				{{ book.Genres}}
-				</center>
+				<img src="{{ url_for('static', filename=book.picture) }}" width="115px" height="175px"><br></center>
+				<u><b>Name: </b></u><a href="{{ url_for('book', book_id=book.id) }}">{{ book.name }}</a><br>
+				<u><b>Author: </b></u><a href="{{ url_for('author', author= book.author.id) }}">{{ book.author.name }}</a><br>
+				<b><u>Genre(s): </u></b>{% for genre in book.genres %}
+					{% if book.genres.index(genre)>0  %}
+					,
+					{%endif%}
+					{{genre.name}}
+					{% endfor %}<br>
+						</td>
 				</td>
 			{%endfor%}
 			</table>

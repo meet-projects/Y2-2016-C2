@@ -92,7 +92,7 @@
 			</table>
 
 
-			<br><br><br><br>
+			<br>
 			<table class="table">
 				<thead>
 					<center><h3>Israeli Books</h3></center>
@@ -102,7 +102,7 @@
 					{% for book in booksi %}
 					<td><center><img src="{{ url_for('static', filename=book.picture) }}" width="115px" height="175px"></center><br>
 					<b><u>Name: </u></b><a href="{{ url_for('book', book_id=book.id) }}">{{book.name}}</a><br>
-					<b><u>Author: </u><a href="{{url_for('author', author=book.author.id) }}">{{book.author.name}}</a><br>
+					<b><u>Author: </u></b><a href="{{url_for('author', author=book.author.id) }}">{{book.author.name}}</a><br>
 					<b><u>Language: </u></b>{{book.lang}}<br>
 					<b><u>Genre(s): </u></b>{% for genre in book.genres %}
 					{% if book.genres.index(genre)>0  %}

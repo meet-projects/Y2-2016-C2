@@ -82,7 +82,7 @@ def book(book_id):
 		revtext=request.form['review']
 		reviewmain=Reviews(rating=rating, review=revtext, book=book)
 		dbsession.add(reviewmain)
-		userreview=UserToReviews(user=session['user'], review=)
+		userreview=UserToReviews(user=session['user'], review=reviewmain)
 		dbsession.commit()
 
 
