@@ -128,9 +128,9 @@ def history():
 	booksp=[]
 	if (history is not None):
 		i=len(history)-1
-		while (len(booksi)<5 and len(booksp)<5 and i>0):
+		while (len(booksi)<5 and len(booksp)<5 and i>=0):
 			book=dbsession.query(Books).filter_by(id=history[i].book).first()
-			if (bookx.nat=="Palestinian"):
+			if (book.nat=="Palestinian"):
 				booksp.append(book)
 			else:
 				booksi.append(book)

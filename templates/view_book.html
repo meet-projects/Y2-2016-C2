@@ -2,7 +2,7 @@
 <html style="background-color: #D3D3D3">
 <head>
   <title>
-  {{user.name}}'s History
+  {{book.name}}
   </title>
       <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -106,11 +106,11 @@
 
 						<tbody>
 							<tr>
-								<td colspan="5">
+								<td>
 									<input type="number" name="rating" required min=1 max=5>
 								</td>
 								<td >
-									<textarea name="review" placeholder="Put your review of the book here"></textarea>
+									<textarea name="review" placeholder="Put your review of the book here" class="form-control" maxlength="300"></textarea>
 								</td>
 								<td>
 									<input type="submit" class="btn btn-primary" value="Submit Review">

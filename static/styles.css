@@ -40,3 +40,6 @@ div {
 hr {
 	border-color: #25171A;
 }
+th {
+	text-align: center;
+}
