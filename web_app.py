@@ -115,7 +115,7 @@ def settings():
 			user.email=request.form['email']
 			user.nat=request.form['nat']
 			dbsession.commit()
-			return redirect(url_for('settings', user=user))
+			return redirect(url_for('settings'))
 	return render_template('settings.html', user=user)
 
 
@@ -146,7 +146,7 @@ def signUp():
 			email=request.form['email']
 			password=request.form['password']
 			dob=datetime(year=int(request.form['year']), month=int(request.form['month']), day=int(request.form['day']))
-			nat=request.form['nat']
+			nat=request.form['nationality']
 			user=Users(name=name, email=email, dob=dob, password=password, nat=nat)
 			dbsession.add(user)
 			dbsession.commit()
