@@ -5,7 +5,7 @@ app.secret_key="this is my project"
 ### Add your tables here!
 # For example:
 # from database_setup import Base, Potato, Monkey
-from database_setup import Base, Books, Users, Authors, Reviews,Genre,UserToGenre, BooksToReviews, UserToReviews, ReadBooks
+from database_setup import Base, Books, Users, Authors, Reviews,Genre,UserToGenre, BooksToReviews, UserToReviews, ReadBooks, Languages, UsersToLanguages, BooksToLanguages
 
 from datetime import datetime
 
@@ -34,9 +34,12 @@ def home():
 
 	books=dbsession.query(Books).all()
 	sortedlist=[]
+	num=0
 	for book in books:
 		if (book.nat!=user.nat):
-			sortedlist.append(book)
+			for lang in book.lang:
+				if (lang in user.lang):
+					sortedlist.append(book)
 	return render_template('home.html', user=user, books=sortedlist)
 
 @app.route('/nationalities')
@@ -69,30 +72,43 @@ def Signout():
 def book(book_id):
 	user=Query(session['user'])
 	book=dbsession.query(Books).filter_by(id=book_id).first()
+	author=dbsession.query(Authors).filter_by(id=book.authorid).first()
+	bookreviews=dbsession.query(BooksToReviews).filter_by(book=book.id).all()
+	reviews=[]
+	users=[]
+	i=0
+	if (bookreviews is not None):
+		for review in bookreviews:
+			review=dbsession.query(Reviews).filter_by(id=review.review).first()
+			reviews.append(review)
+		for review in reviews:
+			revuser=dbsession.query(UserToReviews).filter_by(review=review.id).first()
+			users.append(Query(revuser.user))
 	if (request.method=='GET'):
-		author=dbsession.query(Authors).filter_by(id=book.authorid).first()
-		bookreviews=dbsession.query(BooksToReviews).filter_by(book=book.id).all()
-		revusers=[]
-		reviews=[]
-		users=[]
-		i=0
-		if (bookreviews is not None):
-			for review in bookreviews:
-				reviews.append(dbsession.query(Reviews).filter_by(id=review.id).first())
-				revusers.append(dbsession.query(UserToReviews).filter_by(review=review.id).first())
-				users.append(Query(revusers[i].id))
-				i+=1
-		
+			
 		#reviews=dbsession.query(Reviews).filter_by().all()
 		return render_template("view_book.html", book=book, author=author, user=user, reviews=reviews, users=users)
 
 	else:
-		if ('read' not in request.form):
-			if (request.form['mark'] is not None):
-				read=ReadBooks(user=session['user'], book=book.id)
-				dbsession.add(read)
-				dbsession.commit()
-			return redirect(url_for('book', book_id=book.id))
+		if ('mark' in request.form):
+			read=ReadBooks(user=session['user'], book=book.id)
+			dbsession.add(read)
+			dbsession.commit()
+		elif ('rev' in request.form and user not in users):
+			user=Query(session['user'])	
+			rating=request.form['rating']
+			revtext=request.form['review']
+
+			review=Reviews(rating=rating, review=revtext)
+			dbsession.add(review)
+			dbsession.commit()
+			review=dbsession.query(Reviews).filter_by(rating=rating, review=revtext).first()
+			revuser=UserToReviews(user=user.id, review=review.id)
+			revbook=BooksToReviews(book=book.id, review=review.id)
+			dbsession.add(revuser)
+			dbsession.add(revbook)
+			dbsession.commit()
+		return redirect(url_for('book', book_id=book.id))
 
 
 
@@ -128,7 +144,7 @@ def history():
 	booksp=[]
 	if (history is not None):
 		i=len(history)-1
-		while (len(booksi)<5 and len(booksp)<5 and i>=0):
+		while ((len(booksi)<5 or len(booksp)<5) and i>=0):
 			book=dbsession.query(Books).filter_by(id=history[i].book).first()
 			if (book.nat=="Palestinian"):
 				booksp.append(book)
@@ -140,6 +156,7 @@ def history():
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
 	genres=dbsession.query(Genre).all()
+	languages=dbsession.query(Languages).all()
 	if request.method == 'POST':
 		if (dbsession.query(Users).filter_by(email=request.form['email']).first()==None):
 			name=request.form['name']
@@ -147,6 +164,7 @@ def signUp():
 			password=request.form['password']
 			dob=datetime(year=int(request.form['year']), month=int(request.form['month']), day=int(request.form['day']))
 			nat=request.form['nationality']
+			langs=request.form.getlist('language')
 			user=Users(name=name, email=email, dob=dob, password=password, nat=nat)
 			dbsession.add(user)
 			dbsession.commit()
@@ -156,8 +174,12 @@ def signUp():
 				genreob=UserToGenre(user_id=id, genre_id=int(genre))
 				dbsession.add(genreob)
 				dbsession.commit()
+			for language in langs:
+				langob=UsersToLanguages(user=id, language=language)
+				dbsession.add(langob)
+				dbsession.commit()
 			return redirect(url_for("Signin"))
-	return render_template("SignUp.html", genres=genres)
+	return render_template("SignUp.html", genres=genres, languages=languages)
 
 @app.route('/genres/')
 def Genres():
@@ -165,27 +187,6 @@ def Genres():
 	user=Query(session['user'])
 	return render_template('genre.html', user=user, genres=genres)
 
-
-@app.route('/review/<int:book>', methods=['POST'])
-def Review(book):
-	user=Query(session['user'])	
-	rating=request.form['rating']
-	revtext=request.form['review']
-	bookrev=dbsession.query(BooksToReviews).filter_by(book=book).all()
-	reviewed=dbsession.query(UserToReviews).filter_by(user=user.id).all()
-	for review in reviewed:
-		if (review in reviewed):
-			return redirect(url_for('book', book_id=book))
-	review=Reviews(rating=rating, review=revtext)
-	dbsession.add(review)
-	dbsession.commit()
-	review=dbsession.query(Reviews).filter_by(rating=rating, review=revtext).first()
-	revuser=UserToReviews(user=user.id, review=review.id)
-	revbook=BooksToReviews(book=book, review=review.id)
-	dbsession.add(revuser)
-	dbsession.add(revbook)
-	dbsession.commit()
-	return redirect(url_for('book', book_id=book))
 
 def Query(id):
 	return dbsession.query(Users).filter_by(id=id).first()

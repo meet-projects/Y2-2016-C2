@@ -19,6 +19,7 @@ class Users(Base):
 	genres = relationship('Genre', secondary='user_to_genre', uselist=True)
 	review=relationship('Reviews', secondary='user_to_review', uselist=True)
 	books=relationship('Books', secondary='read_books', uselist=True)
+	lang=relationship('Languages', secondary='users_to_languages', uselist=True)
 
 class UserToReviews(Base):
 	__tablename__='user_to_review'
@@ -52,7 +53,7 @@ class Books(Base):
 	name=Column(String)
 	authorid=Column(Integer, ForeignKey("authors.id"))
 	author = relationship("Authors")
-	lang=Column(String)
+	lang=relationship('Languages', secondary='books_to_languages', uselist=True)
 	nat=Column(String)
 	review=relationship('Reviews', secondary='book_to_review', uselist=True)
 	genres = relationship('Genre', secondary='book_to_genre', uselist=True)
@@ -90,6 +91,29 @@ class Reviews(Base):
 	user=relationship('Users', secondary='user_to_review')
 	rating=Column(Integer)
 	review=Column(String(300))
+
+
+class Languages(Base):
+	__tablename__="languages"
+	id=Column(Integer, primary_key=True)
+	language=Column(String)
+	users=relationship('Users', secondary='users_to_languages', uselist=True)
+	books=relationship('Books', secondary='books_to_languages', uselist=True)
+
+
+class UsersToLanguages(Base):
+	__tablename__="users_to_languages"
+	id=Column(Integer, primary_key=True)
+	user=Column(Integer, ForeignKey('users.id'))
+	language=Column(Integer, ForeignKey('languages.id'))
+
+class BooksToLanguages(Base):
+	__tablename__='books_to_languages'
+	id=Column(Integer, primary_key=True)
+	book=Column(Integer, ForeignKey('books.id'))
+	language=Column(Integer, ForeignKey('languages.id'))
+
+
 
 
 #PLACE YOUR TABLE SETUP INFORMATION HERE

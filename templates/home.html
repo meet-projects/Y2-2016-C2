@@ -71,6 +71,14 @@
 					{%endif%}
 					{{genre.name}}
 					{% endfor %}<br>
+
+				<b><u>Language(s):</u></b> 
+				{% for lang in book.lang %}
+				{% if book.lang.index(lang)>0 %}
+				,
+				{% endif %}
+				{{lang.language}}
+				{% endfor %}<br>
 						</td>
 				</td>
 			{%endfor%}

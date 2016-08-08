@@ -83,8 +83,15 @@
 					<td><center><img src="{{ url_for('static', filename=book.picture) }}" width="115px" height="175px"></center><br>
 					<b><u>Name: </u></b><a href="{{ url_for('book', book_id=book.id) }}">{{book.name}}</a><br>
 					<b><u>Author: </u></b><a href="{{url_for('author', author=book.author.id) }}">{{book.author.name}}</a><br>
-					<b><u>Language: </u></b>{{book.lang}}<br>
 					<b><u>Genre(s): </u></b>{% for name in book.genres %}{{name.name}}{%endfor%}<br>
+					<b><u>Language(s): </u></b>
+					{% for language in book.lang %}
+						{% if book.lang.index(language)>0 %}
+						,
+						{%endif%}
+					{{language.language}}	
+					{% endfor %}
+					<br>
 					</td>
 					{% endfor %}
 					</tr>
@@ -102,13 +109,22 @@
 					<td><center><img src="{{ url_for('static', filename=book.picture) }}" width="115px" height="175px"></center><br>
 					<b><u>Name: </u></b><a href="{{ url_for('book', book_id=book.id) }}">{{book.name}}</a><br>
 					<b><u>Author: </u></b><a href="{{url_for('author', author=book.author.id) }}">{{book.author.name}}</a><br>
-					<b><u>Language: </u></b>{{book.lang}}<br>
-					<b><u>Genre(s): </u></b>{% for genre in book.genres %}
+					<b><u>Genre(s): </u></b>
+					{% for genre in book.genres %}
 					{% if book.genres.index(genre)>0  %}
 					,
 					{%endif%}
 					{{genre.name}}
 					{% endfor %}<br>
+
+					<b><u>Language(s): </u></b>
+					{% for language in book.lang %}
+						{% if book.lang.index(language)>0 %}
+						,
+						{%endif%}
+					{{language.language}}	
+					{% endfor %}
+					<br>
 					</td>
 					{% endfor %}
 					</tr>

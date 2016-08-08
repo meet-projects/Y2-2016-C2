@@ -75,10 +75,17 @@
 					{% for book in booksp %}
 					<td>
 					<img src="{{ url_for('static', filename=book.picture) }}" width="115px" height="175px"><br>
-						Name: <a href="{{ url_for('book', book_id=book.id) }}">{{book.name}}</a><br>
-						Author: <a href="{{ url_for('author', author=book.authorid) }}">{{book.author.name}}<br></a>
-						Language: {{book.lang}}
-						Genre(s): {% for genre in book.genres %}
+						<b><u>Name: </u></b><a href="{{ url_for('book', book_id=book.id) }}">{{book.name}}</a><br>
+						<b><u>Author: </u></b><a href="{{ url_for('author', author=book.authorid) }}">{{book.author.name}}<br></a>
+						<b><u>Language(s): </u></b>
+					{% for language in book.lang %}
+						{% if book.lang.index(language)>0 %}
+						,
+						{%endif%}
+					{{language.language}}	
+					{% endfor %}
+					<br>
+						<b><u>Genre(s): </u></b>{% for genre in book.genres %}
 					{% if book.genres.index(genre)>0  %}
 					,
 					{%endif%}
@@ -96,10 +103,17 @@
 				{% for book in booksi %}
 				<td>
 				<img src="{{ url_for('static', filename=book.picture) }}" width="115px" height="175px"><br>
-				Name: <a href="{{ url_for('book', book_id=book.id) }}">{{book.name}}</a><br>
-				Author: <a href="{{ url_for('author', author=book.authorid) }}">{{book.author.name}}<br></a>
-				Language: {{book.lang}}
-				Genre(s): {% for genre in book.genres %}
+				<b><u>Name: </u></b><a href="{{ url_for('book', book_id=book.id) }}">{{book.name}}</a><br>
+				<b><u>Author: </u></b><a href="{{ url_for('author', author=book.authorid) }}">{{book.author.name}}<br></a>
+				<b><u>Language(s): </u></b>
+					{% for language in book.lang %}
+						{% if book.lang.index(language)>0 %}
+						,
+						{%endif%}
+					{{language.language}}	
+					{% endfor %}
+					<br>
+				<b><u>Genre(s): </u></b>{% for genre in book.genres %}
 					{% if book.genres.index(genre)>0  %}
 					,
 					{%endif%}

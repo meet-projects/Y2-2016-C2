@@ -74,7 +74,14 @@
 					<b><u>Name: </u></b>{{book.name}}<br>
 					<b><u>Author: </u></b><a href="{{ url_for('author', author=book.authorid) }}">{{book.author.name}}</a><br>
 					<b><u>Nationality: </u></b>{{book.nat}}<br>
-					<b><u>Language: </u></b>{{book.lang}}<br>
+					<b><u>Language(s): </u></b>
+					{% for language in book.lang %}
+						{% if book.lang.index(language)>0 %}
+						,
+						{%endif%}
+					{{language.language}}	
+					{% endfor %}
+					<br>
 					<b><u>Genre(s): </u></b>{% for genre in book.genres %}
 					{% if book.genres.index(genre)>0  %}
 					,
@@ -97,7 +104,7 @@
 
 			<div>
 				{% if user != None %}
-				<form class="form" action="{{ url_for('Review',book=book.id) }}" method="post" name="review">
+				<form class="form" action="{{ url_for('book',book_id=book.id) }}" method="post" name="review">
 					<table class="table">
 						<thead>
 							<th>Rating</th>
@@ -113,7 +120,7 @@
 									<textarea name="review" placeholder="Put your review of the book here" class="form-control" maxlength="300"></textarea>
 								</td>
 								<td>
-									<input type="submit" class="btn btn-primary" value="Submit Review">
+									<input type="submit" class="btn btn-primary" value="Submit Review" name="rev">
 								</td>
 							</tr>
 						</tbody>
