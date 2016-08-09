@@ -93,13 +93,19 @@
 						{%endif%}
 						<td><center><img src="{{ url_for('static', filename=book.picture) }}" width="115px" height="175px"><br></center>
 						<u><b>Name: </b></u><a href="{{ url_for('book', book_id=book.id) }}">{{book.name}}<br></a>
-						<u><b>Language: </b></u>{{book.lang}}<br>
 						<u><b>Genre(s): </b></u>{% for genre in book.genres %}
 					{% if book.genres.index(genre)>0  %}
 					,
 					{%endif%}
 					{{genre.name}}
 					{% endfor %}<br>
+					<b><u>Language(s):</u></b> 
+				{% for lang in book.lang %}
+				{% if book.lang.index(lang)>0 %}
+				,
+				{% endif %}
+				{{lang.language}}
+				{% endfor %}<br>
 						</td>
 						{%endfor%}	
 						</tr>			
